@@ -38,8 +38,8 @@ class Company(models.Model):
     dwolla_secret_key = models.CharField(max_length=120)
     dwolla_public_key = models.CharField(max_length=120)
     phone = models.CharField(max_length=120,null=True)
-    logo = models.ImageField(upload_to="Logo/",verbose_name='Logo')
-    card_logo = models.ImageField(upload_to="Card_logo/",verbose_name="Card_Logo")
+    logo = models.ImageField(upload_to="Logo/",verbose_name='Logo',null=True,blank=True)
+    card_logo = models.ImageField(upload_to="Card_logo/",verbose_name="Card_Logo",null=True,blank=True)
     heading_1 = models.CharField(max_length=120)
     heading_2 = models.CharField(max_length=120)
     message = models.TextField()
@@ -59,7 +59,7 @@ class Company(models.Model):
         return (self.name) 
 
 class CompanyPermission(models.Model):
-    code = models.IntegerField()
+    code = models.CharField(max_length=120)
     name = models.CharField(max_length=120)
  
     def __str__(self):
@@ -71,7 +71,7 @@ class CompanyRole(models.Model):
     permission = models.ManyToManyField(CompanyPermission)
 
     def __str__(self):
-        return (self.company) 
+        return (self.name) 
 
 
 class User(AbstractBaseUser,PermissionsMixin):
@@ -119,4 +119,10 @@ class Member(models.Model):
 
 def setup_permission():
     for i in Company_permission_choices:
-       role,created = CompanyPermission.objects.get_or_create()
+        try:
+            role,created = CompanyPermission.objects.get_or_create(code=i[0],name=i[1])
+        except Exception as e:
+            print("Exception",e)
+             
+           
+setup_permission()
