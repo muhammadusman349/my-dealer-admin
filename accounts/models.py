@@ -83,7 +83,6 @@ class User(AbstractBaseUser,PermissionsMixin):
     is_verified = models.BooleanField(default= False)
     is_active = models.BooleanField(default= True)
     is_staff = models.BooleanField(default= False)
-    is_owner = models.BooleanField(default= False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -115,7 +114,8 @@ class Member(models.Model):
     is_owner = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
 
-
+    def __str__(self):
+        return str(self.user)
 
 def setup_permission():
     for i in Company_permission_choices:

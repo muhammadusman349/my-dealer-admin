@@ -47,8 +47,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def create(self,validated_data):   
         user_obj = User(
             name      = validated_data.get('name'),
-            email           = validated_data.get('email'),
-            phone           = validated_data.get('phone'),)
+            email     = validated_data.get('email'),
+            phone     = validated_data.get('phone'),
+            )
                   
         user_obj.set_password(validated_data.get('password'))
         # user_obj.is_owner = True 
@@ -59,10 +60,20 @@ class RegistrationSerializer(serializers.ModelSerializer):
 class Loginserializer(serializers.Serializer):
     email = serializers.CharField(required=True)
     password  =serializers.CharField(required=True)
+    member_info = serializers.SerializerMethodField() 
+
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'name',
+            'email',
+            'member_info',
+        ]
         
-    def validate(self, obj):
-        email = obj.get('email', '')
-        password = obj.get('password', '')
+    def validate(self, attr):
+        email = attr.get('email', '')
+        password = attr.get('password', '')
         try:
             user = User.objects.get(email__iexact=email)
         except User.DoesNotExist:
@@ -75,17 +86,25 @@ class Loginserializer(serializers.Serializer):
                     {"password": "provided credentials are not valid password"}, code=status.HTTP_401_UNAUTHORIZED)
                 
         token = RefreshToken.for_user(user)
-
-        obj['id']            = int(user.id)
-        obj['name']          = str(user.name)
-        obj['phone']         = str(user.phone)
-        obj['email']         = str(user.email)
-        obj['is_owner']      = str(user.is_owner)
-        obj['access_token']  = str(token.access_token)
-        obj['refresh_token'] = str(token)
+        members = Member.objects.filter(user__email = user.email)
+        member_list =[]
+        for member in members:
+            data_dict = {
+                "Member id":member.id,
+                "Company":member.company.name,
+                "Company id":member.company.id,
+                "Owner":member.is_owner
+            }
+            member_list.append(data_dict)
+        attr['id']            = int(user.id)
+        attr['name']          = str(user.name)
+        attr['member info']   = (member_list)
+        attr['email']         = str(user.email)
+        attr['access_token']  = str(token.access_token)
+        attr['refresh_token'] = str(token)
         
-        return obj
-
+        return attr
+   
 
 
 
