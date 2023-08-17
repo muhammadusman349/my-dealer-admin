@@ -288,18 +288,170 @@ dict1= {
 
 # for x in dict1.values():
 #     print(x)
-my = dict1.copy()
+# my = dict1.copy()
 # my = dict(dict1)
 
-print(my)
+# print(my)
 
 
-car = {
-  "brand": "Ford",
-  "model": "Mustang",
-  "year": 1964
-}
+# car = {
+#   "brand": "Ford",
+#   "model": "Mustang",
+#   "year": 1964
+# }
+# 0
+# x = car.setdefault("model","red")
 
-x = car.setdefault("model","red")
+# print(x)
 
-print(x)
+# newl =[n for n in range(10)]
+# print(newl)  
+
+# new = [n for n in range(50) if n % 2 == 0]
+# print(new)
+
+
+
+# def make_pretty(func):
+#     def inner():
+#         print("I got Triple ELemination")
+#         func()
+#     return inner
+# @make_pretty
+# def ordinary():
+#     print("i am ordinary")
+# ordinary()
+
+
+# def star(func):
+#     def inner(*args, **kwargs):
+#         print("*" * 15)
+#         func(*args, **kwargs)
+#         print("*" * 15)
+#     return inner
+
+
+# def percent(func):
+#     def inner(*args, **kwargs):
+#         print("%" * 15)
+#         func(*args, **kwargs)
+#         print("%" * 15)
+#     return inner
+
+# @star
+# @percent
+# def printer(msg):
+#     print(msg)
+
+# printer = star(percent(printer))
+# printer("Hello")
+
+# def my_gen():
+#     n = 1
+#     print("This is printed first")
+#     yield n
+#     n+=1
+#     print("this is printed second")
+#     yield n
+#     n+=1
+#     print("this is printed at last")
+#     yield n
+
+# for item in my_gen():
+#     print(item)
+
+
+## Fibonacci Sequence ##
+
+# def gen_fibon(n):
+#     a= 1
+#     b= 1
+#     for i in range(n):
+#         yield(a)
+#         a,b = b,a+b
+# for number in gen_fibon(10):
+#     print(number)
+# g = gen_fibon(10)
+
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+# print(next(g))
+
+# n = [1,3,5]
+# e = [2,4,6]
+
+# n.append(e)
+
+# print(n)
+
+
+# p = [11,3,7,5,2]
+# p.sort(reverse=True)
+# print(p)
+
+# def takeSecond(elem):
+#     return elem[1]
+
+# ran=[(2,2),(3,4),(4,1),(1,3)]
+# ran.sort(key=takeSecond)
+
+# print(ran)
+
+# employees = [
+#     {'Name': 'Alan Turing', 'age': 25, 'salary': 10000},
+#     {'Name': 'Sharon Lin', 'age': 30, 'salary': 8000},
+#     {'Name': 'John Hopkins', 'age': 18, 'salary': 1000},
+#     {'Name': 'Mikhail Tal', 'age': 40, 'salary': 15000},
+# ]
+
+# def get_name(employees):
+#     return employees.get('Name')
+
+# employees.sort(key=get_name)
+
+# print(employees)
+
+# string = input("enter elements(space-separated): ")
+
+# lst = string.split()
+
+# print('the list is :',lst)
+
+# m = []
+# for i in range(5):
+#     m.append([])
+#     # print(m)
+#     for j in range(5):
+#         m[i].append(j)
+# print(m)
+
+# m = [[j for j in range(5)]for i in range(5)]
+
+# print(m)
+
+planets  = [['Mercury','Venus','Earth'],['Mars','Jupiter','Saturn'],['Uranus','Neptune','Pluto']]
+f_p = [planet for sublist in planets for planet in sublist if len(planet)<6]
+print(f_p)
+
+
+# f_p = []
+# for sublist in planets :
+    # print(sublist)
+    # for planet in sublist:
+        # print(planet)
+        # if len(planet)>=7:
+            # print(planet)
+            # f_p.append(planet)
+# print(f_p)
