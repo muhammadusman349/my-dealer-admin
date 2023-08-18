@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .models import User,Company,CompanyPermission,CompanyRole,Member
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions
+from django.contrib.auth.decorators import permission_required
 from .serializers import (      RegistrationSerializer,
                                 Loginserializer,
                                 CompanyRoleSerializer,
@@ -33,16 +34,19 @@ class CompanyRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyA
                 queryset = CompanyRole.objects.filter(company__id=self.request.user.company.id)
             return queryset
 
-
+        @permission_required('can_add_role')
         def post(self, request, *args, **kwargs):
             return super().post(request, *args, **kwargs)
-
+        
+        @permission_required('can_update_role')
         def put(self, request, *args, **kwargs):
             return super().put(request, *args, **kwargs)
-
+        
+        @permission_required('can_update_role')
         def patch(self, request, *args, **kwargs):
             return super().patch(request, *args, **kwargs)
-
+        
+        @permission_required('can_delete_role')
         def destroy(self, request, *args, **kwargs):
             return super().destroy(request, *args, **kwargs)
 
