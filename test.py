@@ -266,11 +266,11 @@ from accounts.models import User,Member
 # print(List[1])
 
 
-dict1= {
-    "brnd":"ford",
-    "model":"mustang",
-    "year":1987
-}
+# dict1= {
+#     "brnd":"ford",
+#     "model":"mustang",
+#     "year":1987
+# }
 
 # dict.update({"color":"red"})
 # dict["color"] = "black"
@@ -441,9 +441,8 @@ dict1= {
 
 # print(m)
 
-planets  = [['Mercury','Venus','Earth'],['Mars','Jupiter','Saturn'],['Uranus','Neptune','Pluto']]
-f_p = [planet for sublist in planets for planet in sublist if len(planet)<6]
-print(f_p)
+# planets  = [['Mercury','Venus','Earth'],['Mars','Jupiter','Saturn'],['Uranus','Neptune','Pluto']]
+# f_p = [planet for sublist in planets for planet in sublist if len(planet)<6]
 
 
 # f_p = []
@@ -455,3 +454,141 @@ print(f_p)
             # print(planet)
             # f_p.append(planet)
 # print(f_p)
+
+# odd_square =[x**2 for x in range(1,11) if x % 2==1]
+# print(odd_square)
+
+# dic = {
+#     "name":"usman",
+#     "class":"BSSE",
+#     "roll_no":27
+# }
+# dic.keys()
+# print(dic)
+# dic.update({"mobile":"vivo"})
+# print(dic)
+# dic["roll_no"]=23
+# print(dic)
+# for i,v in dic.items():
+#     print(i,v)
+
+# def hello_decorator(func):
+#     def inner1(*args,**kwargs):
+#         print("before Execution")
+#         returned_value=func(*args,**kwargs)
+#         print("after Execution")
+#         return returned_value
+#     return inner1
+
+# @hello_decorator
+# def sum_two_numbers(a, b):
+#     print("Inside the function")
+#     return a + b
+ 
+# a, b = 1, 2
+# print("Sum =", sum_two_numbers(a, b))
+
+# car = {
+#   "brand": "Ford",
+#   "model": "Mustang",
+#   "year": 1964
+# }
+# 
+# x=car.popitem()
+# 
+# print(x)
+
+# y = [['vegas','London'],['US','UK']]
+
+# for x in y:
+#     for a in x:
+#         print(a)
+# for myList in [[10,13,17],[3,5,1],[13,11,12]]:
+#     for item in myList:
+#         print(item)
+
+# lis = ["apple","banana","cherry","orange","kiwi","mango"]
+# lis[2:4] = ["blackcurrant","watermelon"]
+# print(lis)
+
+# lis.clear()
+
+# print(lis)
+
+# l={
+#    "even1":"d",
+#    "odd1":"D",
+#    'even12':"ds",
+#    'odd':"S",
+#    "even":"SD"
+#    }
+# for i,v in l.items():
+#     print(i,v)
+
+
+# n = [1,2,3,4,5,6,7]
+# s = []
+
+# for i in n:
+#     s.append(i*i)
+
+# print(s)
+
+# ls= [n for n in range(5)]
+
+# print(ls)
+
+# lis = [n*2 for n in range(5)]
+# print(lis)
+
+# fa_lang_char_upper = [letter.upper() for  letter in "MuhammadUsman"]
+# print(fa_lang_char_upper)
+
+# lists = ["usman","ali","ahmed","majid","bakar khan hussain","mirza khurram","will you m"]
+# l = []
+
+# for i in lists:
+#     if "h" in i:
+#         l.append(i)
+# print(l)
+
+class Computer:
+
+    def __init__(self):
+        self.__maxprice = 900
+    
+    def sell(self):
+        print("Selling Price: {}".format(self.__maxprice))
+    
+    def setMaxPrice(self,price):
+        self.__maxprice = price
+c = Computer()
+c.sell()
+
+c.__maxprice = 1000
+c.sell()
+
+c.setMaxPrice(1000)
+c.sell()
+
+
+class Polygon:
+    def render(self):
+        print("Rendering Polygon...")
+
+class Square(Polygon):
+    def render(self):
+        print("Rendering Square...")
+
+class Circle(Polygon):
+    def render(self):
+        print("Rendering Circle...")
+
+s1 = Square()
+s1.render()
+
+c1 = Circle()
+c1.render()
+
+
+
