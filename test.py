@@ -590,5 +590,198 @@ s1.render()
 c1 = Circle()
 c1.render()
 
+a= {
+    "name":"usman",
+    "age":24,
+    "city":"Rawalpindi"
+}
+# a["color"]= "blue"
+# a.update({"color":"red"})
+
+print(a)
 
 
+num = 21
+p = num
+
+lis= []
+sum1 = 0
+while(num>0):
+    x=num%10
+    lis.append(x)
+    print(lis)
+    num= num//10
+sum1 = sum(lis)
+print(sum1)
+if (p%sum1==0):
+    print("Harshad Number")
+else:
+    print("Not Harshad Number")
+
+def printDivisors(n, factors) :
+    i = 1
+    while i <= n :
+        if (n % i==0) :
+            factors.append(i)
+        i = i + 1
+    return sum(factors) - n
+
+
+
+if __name__ == "__main__": 
+  number1, number2 = 6, 28
+  if int(printDivisors(number1, [])/number1) == int(printDivisors(number2, [])/number2):
+    print("Friendly pair")
+  else:
+    print("Not a Friendly Pair")
+
+
+class Parent():
+    def show(self):
+        print("Inside parent")
+
+class Child(Parent):
+    def show(self):
+       Parent.show(self)
+       print("INSIDE CHILD")
+
+obj = Child()
+obj.show()
+
+
+myList = [
+	{
+		'first name':"muhammad",
+		'last name':"usman"
+	},
+	{
+		'age':24,
+		'mobile':"vivo"
+	},
+	{
+		'Height':5.9,
+		'weight':55
+	}
+]
+
+myList.append({"color":"red"})
+print(type(myList))
+# j=[]
+# for i in myList:
+#     print(i)
+
+
+
+# mydict = {
+#     "Name":{
+#         "first name":"M",
+#         "last name":"usman"
+#     },
+#     "Dob":{
+#         "dob" :5-26-1999,
+#         "age":24
+#     },
+#     "personal":{
+#         "Height":5.9,
+#         "Weight":55
+#     },
+# }
+
+# # del mydict
+# print(mydict)
+
+# u = [
+#    [
+#         'usman','ali','hamza'
+#     ],
+#    [
+#         1,2,3
+#     ]
+# ]
+
+# u.append(a)
+# print(u)
+
+
+class Car:
+    def __init__(self,brand,model):
+        self.brand = brand
+        self.model = model
+
+    def move(self):
+        print("Drive!") 
+
+class Boat:
+    def __init__(self,brand,model):
+        self.brand = brand
+        self.model = model
+    
+    def move(self):
+        print("Sail!")
+
+class Plane:
+    def __init__(self,brand,model):
+        self.brand=brand
+        self.model = model
+    def move(self):
+        print("Fly!")
+
+car1 = Car("Ford","Mustang")
+boat1 = Boat("Ibiza","Touring 20")
+plane1 = Plane("Boeing","747")
+
+for x in (car1,boat1,plane1):
+    x.move()
+
+
+myDict = {
+	'foo': {
+		'a':10,
+		'b':11
+	},
+	'bar': {
+		'c':12,
+		'd':13
+	},
+	'moo': {
+		'e':14,
+		'f':15
+	},
+}
+
+print(myDict['moo']['f'])
+print(myDict['bar']['d'])
+
+# Function to take multiple arguments
+def sum_number(*args):
+    # variable to store the sum of numbers    
+    result = 0
+    
+    # accessing the arguments
+    for num in args:
+        result += num
+    
+    # Output
+    print("Sum : ", result)
+
+    
+# Driver Code
+if(__name__ == "__main__"):
+    print("Similar to Method Overloading\n")
+    print("Single Argument    ->", end = " ")
+    sum_number(10)
+
+    print("Two Arguments      ->", end = " ")
+    sum_number(30, 2)
+
+    print("Multiple Arguments ->", end = " ")
+    sum_number(1, 2, 3, 4, 5)
+import abc
+from abc import ABC, abstractmethod    
+class Color(ABC):
+    @abstractmethod
+    def print_color(self):
+        pass
+class Red(Color):
+    def print_color(self):
+        print()
