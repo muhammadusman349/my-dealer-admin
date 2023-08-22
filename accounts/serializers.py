@@ -62,14 +62,14 @@ class Loginserializer(serializers.Serializer):
     password  =serializers.CharField(required=True)
     member_info = serializers.SerializerMethodField() 
 
-    class Meta:
-        model = User
-        fields = [
-            'id',
-            'name',
-            'email',
-            'member_info',
-        ]
+    # class Meta:
+    #     model = User
+    #     fields = [
+    #         'id',
+    #         'name',
+    #         'email',
+    #         'member_info',
+    #     ]
         
     def validate(self, attr):
         email = attr.get('email', '')
@@ -91,8 +91,10 @@ class Loginserializer(serializers.Serializer):
         for member in members:
             data_dict = {
                 "Member id":member.id,
-                "Company":member.company.name,
+                "Company Name":member.company.name,
                 "Company id":member.company.id,
+                "Company Role Name":member.company_role.name,
+                "Company Role id":member.company_role.id,
                 "Owner":member.is_owner
             }
             member_list.append(data_dict)
