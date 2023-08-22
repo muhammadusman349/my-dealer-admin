@@ -552,120 +552,120 @@ from accounts.models import User,Member
 #         l.append(i)
 # print(l)
 
-class Computer:
+# class Computer:
 
-    def __init__(self):
-        self.__maxprice = 900
+#     def __init__(self):
+#         self.__maxprice = 900
     
-    def sell(self):
-        print("Selling Price: {}".format(self.__maxprice))
+#     def sell(self):
+#         print("Selling Price: {}".format(self.__maxprice))
     
-    def setMaxPrice(self,price):
-        self.__maxprice = price
-c = Computer()
-c.sell()
+#     def setMaxPrice(self,price):
+#         self.__maxprice = price
+# c = Computer()
+# c.sell()
 
-c.__maxprice = 1000
-c.sell()
+# c.__maxprice = 1000
+# c.sell()
 
-c.setMaxPrice(1000)
-c.sell()
-
-
-class Polygon:
-    def render(self):
-        print("Rendering Polygon...")
-
-class Square(Polygon):
-    def render(self):
-        print("Rendering Square...")
-
-class Circle(Polygon):
-    def render(self):
-        print("Rendering Circle...")
-
-s1 = Square()
-s1.render()
-
-c1 = Circle()
-c1.render()
-
-a= {
-    "name":"usman",
-    "age":24,
-    "city":"Rawalpindi"
-}
-# a["color"]= "blue"
-# a.update({"color":"red"})
-
-print(a)
+# c.setMaxPrice(1000)
+# c.sell()
 
 
-num = 21
-p = num
+# class Polygon:
+#     def render(self):
+#         print("Rendering Polygon...")
 
-lis= []
-sum1 = 0
-while(num>0):
-    x=num%10
-    lis.append(x)
-    print(lis)
-    num= num//10
-sum1 = sum(lis)
-print(sum1)
-if (p%sum1==0):
-    print("Harshad Number")
-else:
-    print("Not Harshad Number")
+# class Square(Polygon):
+#     def render(self):
+#         print("Rendering Square...")
 
-def printDivisors(n, factors) :
-    i = 1
-    while i <= n :
-        if (n % i==0) :
-            factors.append(i)
-        i = i + 1
-    return sum(factors) - n
+# class Circle(Polygon):
+#     def render(self):
+#         print("Rendering Circle...")
 
+# s1 = Square()
+# s1.render()
 
+# c1 = Circle()
+# c1.render()
 
-if __name__ == "__main__": 
-  number1, number2 = 6, 28
-  if int(printDivisors(number1, [])/number1) == int(printDivisors(number2, [])/number2):
-    print("Friendly pair")
-  else:
-    print("Not a Friendly Pair")
+# a= {
+#     "name":"usman",
+#     "age":24,
+#     "city":"Rawalpindi"
+# }
+# # a["color"]= "blue"
+# # a.update({"color":"red"})
+
+# print(a)
 
 
-class Parent():
-    def show(self):
-        print("Inside parent")
+# num = 21
+# p = num
 
-class Child(Parent):
-    def show(self):
-       Parent.show(self)
-       print("INSIDE CHILD")
+# lis= []
+# sum1 = 0
+# while(num>0):
+#     x=num%10
+#     lis.append(x)
+#     print(lis)
+#     num= num//10
+# sum1 = sum(lis)
+# print(sum1)
+# if (p%sum1==0):
+#     print("Harshad Number")
+# else:
+#     print("Not Harshad Number")
 
-obj = Child()
-obj.show()
+# def printDivisors(n, factors) :
+#     i = 1
+#     while i <= n :
+#         if (n % i==0) :
+#             factors.append(i)
+#         i = i + 1
+#     return sum(factors) - n
 
 
-myList = [
-	{
-		'first name':"muhammad",
-		'last name':"usman"
-	},
-	{
-		'age':24,
-		'mobile':"vivo"
-	},
-	{
-		'Height':5.9,
-		'weight':55
-	}
-]
 
-myList.append({"color":"red"})
-print(type(myList))
+# if __name__ == "__main__": 
+#   number1, number2 = 6, 28
+#   if int(printDivisors(number1, [])/number1) == int(printDivisors(number2, [])/number2):
+#     print("Friendly pair")
+#   else:
+#     print("Not a Friendly Pair")
+
+
+# class Parent():
+#     def show(self):
+#         print("Inside parent")
+
+# class Child(Parent):
+#     def show(self):
+#        Parent.show(self)
+#        print("INSIDE CHILD")
+
+# obj = Child()
+# obj.show()
+
+
+# myList = [
+# 	{
+# 		'first name':"muhammad",
+# 		'last name':"usman"
+# 	},
+# 	{
+# 		'age':24,
+# 		'mobile':"vivo"
+# 	},
+# 	{
+# 		'Height':5.9,
+# 		'weight':55
+# 	}
+# ]
+
+# myList.append({"color":"red"})
+# print(type(myList))
 # j=[]
 # for i in myList:
 #     print(i)
@@ -703,85 +703,97 @@ print(type(myList))
 # print(u)
 
 
-class Car:
-    def __init__(self,brand,model):
-        self.brand = brand
-        self.model = model
+# class Car:
+#     def __init__(self,brand,model):
+#         self.brand = brand
+#         self.model = model
 
-    def move(self):
-        print("Drive!") 
+#     def move(self):
+#         print("Drive!") 
 
-class Boat:
-    def __init__(self,brand,model):
-        self.brand = brand
-        self.model = model
+# class Boat:
+#     def __init__(self,brand,model):
+#         self.brand = brand
+#         self.model = model
     
-    def move(self):
-        print("Sail!")
+#     def move(self):
+#         print("Sail!")
 
-class Plane:
-    def __init__(self,brand,model):
-        self.brand=brand
-        self.model = model
-    def move(self):
-        print("Fly!")
+# class Plane:
+#     def __init__(self,brand,model):
+#         self.brand=brand
+#         self.model = model
+#     def move(self):
+#         print("Fly!")
 
-car1 = Car("Ford","Mustang")
-boat1 = Boat("Ibiza","Touring 20")
-plane1 = Plane("Boeing","747")
+# car1 = Car("Ford","Mustang")
+# boat1 = Boat("Ibiza","Touring 20")
+# plane1 = Plane("Boeing","747")
 
-for x in (car1,boat1,plane1):
-    x.move()
+# for x in (car1,boat1,plane1):
+#     x.move()
 
 
-myDict = {
-	'foo': {
-		'a':10,
-		'b':11
-	},
-	'bar': {
-		'c':12,
-		'd':13
-	},
-	'moo': {
-		'e':14,
-		'f':15
-	},
-}
+# myDict = {
+# 	'foo': {
+# 		'a':10,
+# 		'b':11
+# 	},
+# 	'bar': {
+# 		'c':12,
+# 		'd':13
+# 	},
+# 	'moo': {
+# 		'e':14,
+# 		'f':15
+# 	},
+# }
 
-print(myDict['moo']['f'])
-print(myDict['bar']['d'])
+# print(myDict['moo']['f'])
+# print(myDict['bar']['d'])
 
 # Function to take multiple arguments
-def sum_number(*args):
+# def sum_number(*args):
     # variable to store the sum of numbers    
-    result = 0
+    # result = 0
     
     # accessing the arguments
-    for num in args:
-        result += num
+    # for num in args:
+    #     result += num
     
     # Output
-    print("Sum : ", result)
+    # print("Sum : ", result)
 
     
 # Driver Code
-if(__name__ == "__main__"):
-    print("Similar to Method Overloading\n")
-    print("Single Argument    ->", end = " ")
-    sum_number(10)
+# if(__name__ == "__main__"):
+#     print("Similar to Method Overloading\n")
+#     print("Single Argument    ->", end = " ")
+#     sum_number(10)
 
-    print("Two Arguments      ->", end = " ")
-    sum_number(30, 2)
+#     print("Two Arguments      ->", end = " ")
+#     sum_number(30, 2)
 
-    print("Multiple Arguments ->", end = " ")
-    sum_number(1, 2, 3, 4, 5)
-import abc
-from abc import ABC, abstractmethod    
-class Color(ABC):
-    @abstractmethod
-    def print_color(self):
-        pass
-class Red(Color):
-    def print_color(self):
-        print()
+#     print("Multiple Arguments ->", end = " ")
+#     sum_number(1, 2, 3, 4, 5)
+# import abc
+# from abc import ABC, abstractmethod    
+# class Color(ABC):
+#     @abstractmethod
+#     def print_color(self):
+#         pass
+# class Red(Color):
+#     def print_color(self):
+#         print()
+
+
+
+
+l=[{'value': 'apple', 'blah': 2}, 
+ {'value': 'banana', 'blah': 3} , 
+ {'value': 'cars', 'blah': 4}]
+
+[d['value'] for d in l]
+# [d['value'] for d in a if 'value' in d]
+
+# print(d)
