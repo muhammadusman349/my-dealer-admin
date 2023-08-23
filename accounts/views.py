@@ -34,19 +34,15 @@ class CompanyRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyA
                 queryset = CompanyRole.objects.filter(company__id=self.request.user.company.id)
             return queryset
 
-        @permission_required('can_add_role')
         def post(self, request, *args, **kwargs):
             return super().post(request, *args, **kwargs)
         
-        @permission_required('can_update_role')
         def put(self, request, *args, **kwargs):
             return super().put(request, *args, **kwargs)
         
-        @permission_required('can_update_role')
         def patch(self, request, *args, **kwargs):
             return super().patch(request, *args, **kwargs)
         
-        @permission_required('can_delete_role')
         def destroy(self, request, *args, **kwargs):
             return super().destroy(request, *args, **kwargs)
 
@@ -71,6 +67,7 @@ class LoginApiView(generics.GenericAPIView):
     permission_classes = (AllowAny,)
     authentication_classes = []
     serializer_class = Loginserializer
+    queryset    = User.objects.all()
     
     
     def post(self, request):
@@ -79,6 +76,15 @@ class LoginApiView(generics.GenericAPIView):
         if serializer.is_valid():
             return Response(serializer.validated_data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
 
 
 
