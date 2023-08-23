@@ -789,11 +789,98 @@ from accounts.models import User,Member
 
 
 
-l=[{'value': 'apple', 'blah': 2}, 
- {'value': 'banana', 'blah': 3} , 
- {'value': 'cars', 'blah': 4}]
+# l=[{'value': 'apple', 'blah': 2}, 
+#  {'value': 'banana', 'blah': 3} , 
+#  {'value': 'cars', 'blah': 4}]
 
-[d['value'] for d in l]
+# [d['value'] for d in l]
 # [d['value'] for d in a if 'value' in d]
 
 # print(d)
+
+
+# data = [
+#     {"claim_number": "TX1048-22024-C639", "total_paid": 278.29, "card_paid": 228.29},
+#     {"claim_number": "TX1048-22086-C647", "total_paid": 161.81, "card_paid": 261.81},
+#     {"claim_number": "TX1048-22081-C648", "total_paid": 261.81, "card_paid": 386.81},
+#     {"claim_number": "TX1048-22024-C639", "total_paid": 318.29, "card_paid": 468.29},
+#     {"claim_number": "TX1048-22081-C648", "total_paid": 318.29, "card_paid": 418.29},
+#     {"claim_number": "TX1048-22086-C647", "total_paid": 0.0,    "card_paid": 10.0},
+#     {"claim_number": "TX1048-22024-C639", "total_paid": 10.0,   "card_paid": 20.0}
+# ]
+
+
+
+
+# tempJson = {}
+# finalList = []
+
+# for eachScopeJson in data:
+#     if eachScopeJson['claim_number'] in tempJson:
+#         tempJson[eachScopeJson['claim_number']]['total_paid'] = tempJson[eachScopeJson['claim_number']]['total_paid'] + eachScopeJson['total_paid']
+#         tempJson[eachScopeJson['claim_number']]['card_paid'] = tempJson[eachScopeJson['claim_number']]['card_paid'] + eachScopeJson['card_paid']
+#     else:
+#         tempJson[eachScopeJson['claim_number']]['claim_number'] = {}
+#         tempJson[eachScopeJson['claim_number']]['total_paid'] = 0 + eachScopeJson['total_paid']
+#         tempJson[eachScopeJson['claim_number']]['card_paid'] = 0 + eachScopeJson['card_paid']
+#         tempJson[eachScopeJson['claim_number']]['difference']= eachScopeJson['total_paid'] - eachScopeJson['card_paid']
+
+
+# for eachKey in tempJson:
+#     finalList.append({'claim_number':eachKey,'total_paid':tempJson[eachKey]['total_paid'],'card_paid':tempJson[eachKey]['card_paid']})
+
+
+# print (tempJson)
+
+
+
+def removeDuplicatedScopesFrom(startingData): 
+    differentScopes = [] 
+    for x in startingData:
+        scope = x["scope"]
+        if scope not in differentScopes: 
+            differentScopes.append(scope) 
+    return differentScopes
+    
+def composeDictionaryElement(scope, invoiced, initial_boq):
+    return("{'scope': u'" + scope + "', 'invoiced': " + str(invoiced) + ", 'initial_boq': " + str(initial_boq) + "}")
+
+def main():
+
+   var = [
+        {'scope': u'internal', 'invoiced': 1000, 'initial_boq': 2800},
+        {'scope': u'internal', 'invoiced': 2000, 'initial_boq': 1000},   
+        {'scope': u'internal', 'invoiced': 2000, 'initial_boq': 500},
+        {'scope': u'external', 'invoiced': 500,  'initial_boq': 1800},
+        {'scope': u'external', 'invoiced': 150,  'initial_boq': 200},
+        {'scope': u'both',     'invoiced': 5000, 'initial_boq': 7000}
+    ]
+   
+    # empty list for the final result
+    finalList = []
+    # identifying the different scopes involved
+    scopes = removeDuplicatedScopesFrom(var)
+    
+    # scanning the input and joining data from the same scope
+    for scope in scopes:
+        
+        # resetting values for each different scope
+        invoiced = 0;
+        initial_boq = 0;
+        
+        # checking all the elements in the list
+        for y in var:
+            if y["scope"] == scope:
+                invoiced = invoiced + y["invoiced"]
+                initial_boq = initial_boq + y["initial_boq"]
+                
+        # when list is over we ask to compose the related dictionary element
+        finalDictionaryElement = composeDictionaryElement(scope, invoiced, initial_boq)
+        # adding it to the final list
+        finalList.append(finalDictionaryElement)
+    
+    # results out without surrounding quotes
+    print("[%s]" % (', '.join(finalList)))
+    
+if __name__== "__main__":
+    main()
