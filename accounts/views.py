@@ -8,13 +8,30 @@ from django.contrib.auth.decorators import permission_required
 from .serializers import (      RegistrationSerializer,
                                 Loginserializer,
                                 CompanyRoleSerializer,
+                                MemberSerializer,
                          )
 
                                 #  ChangePasswordSerializer,
                                 #  ForgetPasswordSerializer,
                                 #  ResetPasswordSerializer,
                                 #  UserListSerializer,
-                                 
+class UserValidate(generics.CreateAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        queryset                = User.objects.all()
+
+        def post(self, request, *args, **kwargs):
+            email = request.data.get("email",'')
+            if email:
+                try:
+                    user_obj = User.objects.get(email__iexact=email)
+                    return Response(
+                                    {"name": user_obj.name, 
+                                     "phone": user_obj.phone,
+                                     "valid": False,}, 
+                                     status=status.HTTP_400_BAD_REQUEST)
+                
+                except User.DoesNotExist:
+                    return Response({"valid": True}, status=status.HTTP_200_OK)
 
 class CompanyRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
         permission_classes      = [permissions.IsAuthenticated]
@@ -28,14 +45,22 @@ class CompanyRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyA
             else:
                 return self.list(request, *args, **kwargs)
 
-        def get_queryset(self):
+        def get_queryset(self,*args,**kwargs):
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
             queryset = self.queryset
-            if 'id' not in self.kwargs:
-                queryset = CompanyRole.objects.filter(company__id=self.request.user.company.id)
+            queryset= CompanyRole.objects.filter(company__id=member.company.id)
             return queryset
 
         def post(self, request, *args, **kwargs):
-            return super().post(request, *args, **kwargs)
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
+            serializer = CompanyRoleSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save(company= member.company) 
+                return Response(serializer.data,status=status.HTTP_200_OK) 
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+
         
         def put(self, request, *args, **kwargs):
             return super().put(request, *args, **kwargs)
@@ -79,10 +104,32 @@ class LoginApiView(generics.GenericAPIView):
 
 
 
+class MemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = MemberSerializer
+        queryset                = Member.objects.all()
+        lookup_field            = 'id'
 
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
 
+        def get_queryset(self):
+            return super().get_queryset()
 
-
+        def post(self, request, *args, **kwargs):
+            return super().post(request, *args, **kwargs)
+             
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
+        def destroy(self, request, *args, **kwargs):
+            return super().destroy(request, *args, **kwargs)
 
 
 
