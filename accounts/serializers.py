@@ -60,16 +60,17 @@ class RegistrationSerializer(serializers.ModelSerializer):
 class Loginserializer(serializers.Serializer):
     email = serializers.CharField(required=True)
     password  =serializers.CharField(required=True)
-    member_info = serializers.SerializerMethodField() 
+    # member_info = serializers.SerializerMethodField() 
 
-    # class Meta:
-    #     model = User
-    #     fields = [
-    #         'id',
-    #         'name',
-    #         'email',
-    #         'member_info',
-    #     ]
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'name',
+            'email',
+            # 'member_info',
+        ]
+    
         
     def validate(self, attr):
         email = attr.get('email', '')
@@ -100,14 +101,25 @@ class Loginserializer(serializers.Serializer):
             member_list.append(data_dict)
         attr['id']            = int(user.id)
         attr['name']          = str(user.name)
-        attr['member info']   = (member_list)
+        attr['member info']   = member_list
         attr['email']         = str(user.email)
         attr['access_token']  = str(token.access_token)
         attr['refresh_token'] = str(token)
         
         return attr
    
+class MemberSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Member
+        fields = (
+               'id',
+               'user',
+               'company',
+               'company_role',
+               'is_owner',
+               'is_approved',  
+        )
 
 
 
@@ -224,31 +236,3 @@ class Loginserializer(serializers.Serializer):
 #         else:
 #             raise serializers.ValidationError({"error": "email is required"})
 #         return attrs
-
-
-
-
-
-
-
-
-
-
-
-
-# class MemberSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Member
-#         fields = (
-#                'id',
-#                'user',
-#                'company',
-#                'company_role',
-#                'is_owner',
-#                'is_approved',  
-#         )
-
-
-
-
