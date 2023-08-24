@@ -15,7 +15,7 @@ from .serializers import (      RegistrationSerializer,
                                 #  ForgetPasswordSerializer,
                                 #  ResetPasswordSerializer,
                                 #  UserListSerializer,
-class UserValidate(generics.CreateAPIView):
+class EmailValidate(generics.CreateAPIView):
         permission_classes      = [permissions.IsAuthenticated]
         queryset                = User.objects.all()
 
@@ -194,3 +194,10 @@ class MemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
 #         if serializer.is_valid():
 #             return Response({'password': 'successfully set New Password '}, status=status.HTTP_200_OK)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+            # member_id = self.kwargs.get("m_id", "")
+            # member = self.get_member(member_id)
+            # if member.is_super_admin is False:
+            #     external_admin = self.get_external_admin(member)
+            #     request.data["external_admin"] = external_admin.id

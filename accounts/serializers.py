@@ -120,6 +120,12 @@ class MemberSerializer(serializers.ModelSerializer):
                'is_owner',
                'is_approved',  
         )
+    def create(self,validated_data):   
+        user_obj = Member(
+            user      = validated_data.get('user'),
+            company     = validated_data.get('company'),
+            company_role     = validated_data.get('company_role'),
+            )
 
 
 
