@@ -156,7 +156,9 @@ class MemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
 
         def get_queryset(self):
             return super().get_queryset()
-
+        
+        # def post(self, request, *args, **kwargs):
+        #     return super().post(request, *args, **kwargs)
         def post(self, request, format=None):
                 # Check if the user already exists then create member
                 try:
@@ -194,7 +196,7 @@ class MemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
         def destroy(self, request, *args, **kwargs):
             return super().destroy(request, *args, **kwargs)
 
-        
+
 
 
 # class MemberListView(generics.ListCreateAPIView):

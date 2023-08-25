@@ -116,6 +116,10 @@ class Loginserializer(serializers.Serializer):
         return attr
    
 class MemberSerializer(serializers.ModelSerializer):
+    # name= serializers.CharField(required = False, allow_blank= True)
+    # email= serializers.EmailField(required = False, allow_blank= True)
+    # phone= serializers.CharField(required = False, allow_blank= True)
+    # password= serializers.CharField(required = False, allow_blank= True)
     class Meta:
         model = Member
         fields = (
@@ -123,36 +127,36 @@ class MemberSerializer(serializers.ModelSerializer):
                'user',
                'company',
                'company_role',
+            #    'name',
+            #    'email',
+            #    'phone',
+            #    'password',
                'is_owner',
                'is_approved',  
         )
-    # def create(self,validated_data): 
-    #     email = validated_data.get('email', '')
+    # def create(self,validated_data):
+    #     name = validated_data.pop('name')
+    #     email = validated_data.pop('email')
+    #     phone = validated_data.pop('phone')
+    #     password = validated_data.pop('password')
+
     #     try:
     #         user = User.objects.get(email__iexact=email)
     #     except User.DoesNotExist:
     #         user=None
     #     if user is None:      
     #         user = User(
-    #             name      = validated_data.get('name'),
-    #             email     = validated_data.get('email'),
-    #             phone     = validated_data.get('phone'),
+    #             name=name,
+    #             email=email,
+    #             phone=phone,
     #             )
                     
-    #         user.set_password(validated_data.get('password'))
+    #         user.set_password(password)
     #         user.is_active = True 
     #         user.save()
     #         return user
-    
-    # def create(self,validated_data):   
-    #     user_obj = Member(
-    #         user      = validated_data.get('user'),
-    #         company     = validated_data.get('company'),
-    #         company_role     = validated_data.get('company_role'),
-    #         )
-    #     user_obj.save()
-    #     return user_obj
-
+        # qs = Member.objects.create(user=user, company_role=validated_data.get("company_role"))
+        # return qs
 
 
 
