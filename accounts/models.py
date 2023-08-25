@@ -1,7 +1,7 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,PermissionsMixin)
-from .__init__ import Company_permission_choices
+from .utils import Company_permission_choices,Sales_representative_choices
 from django.db import models
-
+from .import user_choices
 # Create your models here.
 
 class UserManager(BaseUserManager):
@@ -73,6 +73,20 @@ class CompanyRole(models.Model):
     def __str__(self):
         return (self.name) 
 
+class SalesRepresentativePermission(models.Model):
+    code = models.CharField(max_length=120)
+    name = models.CharField(max_length=120)
+ 
+    def __str__(self):
+        return (self.name)
+    
+class SalesRepresentativeRole(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    name = models.CharField(max_length=120)
+    permission = models.ManyToManyField(SalesRepresentativePermission)
+
+    def __str__(self):
+        return str(self.name)
 
 class User(AbstractBaseUser,PermissionsMixin):
     name = models.CharField(max_length=120)
@@ -111,6 +125,8 @@ class Member(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     company = models.ForeignKey(Company,on_delete=models.CASCADE,null=True,blank=True)
     company_role = models.ForeignKey(CompanyRole,on_delete=models.CASCADE,null=True,blank=True)
+    SalesRepresentative_role = models.ForeignKey(SalesRepresentativeRole,on_delete=models.CASCADE,null=True,blank=True)
+    member_of = models.CharField(max_length=50, choices=user_choices)
     is_owner = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
 
@@ -123,6 +139,10 @@ def setup_permission():
             role,created = CompanyPermission.objects.get_or_create(code=i[0],name=i[1])
         except Exception as e:
             print("Exception",e)
-             
+    for i in Sales_representative_choices:
+        try:
+            role,created =SalesRepresentativePermission.objects.get_or_create(code=i[0],name=i[1])
+        except Exception as e:
+            print("Exception",e)         
            
 setup_permission()

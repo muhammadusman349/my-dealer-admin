@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin 
-from .models import User,Company,CompanyPermission,CompanyRole,Member,OtpVerify
+from .models import User,Company,CompanyPermission,CompanyRole,Member,OtpVerify,SalesRepresentativeRole,SalesRepresentativePermission
 # Register your models here.
 
 
@@ -19,6 +19,8 @@ admin.site.register(User,CustomUserAdmin)
 admin.site.register(Company)
 admin.site.register(CompanyPermission)
 admin.site.register(CompanyRole)
+admin.site.register(SalesRepresentativePermission)
+admin.site.register(SalesRepresentativeRole)
 admin.site.register(Member)
 admin.site.register(OtpVerify)
 

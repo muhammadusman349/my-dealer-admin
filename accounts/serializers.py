@@ -1,4 +1,4 @@
-from accounts.models import User, OtpVerify,Company,CompanyPermission,CompanyRole,Member
+from accounts.models import User, OtpVerify,Company,CompanyPermission,CompanyRole,Member,SalesRepresentativeRole,SalesRepresentativePermission
 from rest_framework import serializers,status
 from rest_framework_simplejwt.tokens import RefreshToken
 import pyotp
@@ -18,6 +18,15 @@ class CompanyRoleSerializer(serializers.ModelSerializer):
                 'permission',
         )
 
+class SalesRepresentativeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SalesRepresentativeRole
+        fields = (
+            'id',
+            'company',
+            'name',
+            'permission',
+        )
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={"input_type":"password"},write_only=True)
     
@@ -60,7 +69,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
 class Loginserializer(serializers.Serializer):
     email = serializers.CharField(required=True)
     password  =serializers.CharField(required=True)
-    # member_info = serializers.SerializerMethodField() 
 
     class Meta:
         model = User
@@ -68,7 +76,6 @@ class Loginserializer(serializers.Serializer):
             'id',
             'name',
             'email',
-            # 'member_info',
         ]
     
         
@@ -109,7 +116,6 @@ class Loginserializer(serializers.Serializer):
         return attr
    
 class MemberSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Member
         fields = (
@@ -120,12 +126,32 @@ class MemberSerializer(serializers.ModelSerializer):
                'is_owner',
                'is_approved',  
         )
-    def create(self,validated_data):   
-        user_obj = Member(
-            user      = validated_data.get('user'),
-            company     = validated_data.get('company'),
-            company_role     = validated_data.get('company_role'),
-            )
+    # def create(self,validated_data): 
+    #     email = validated_data.get('email', '')
+    #     try:
+    #         user = User.objects.get(email__iexact=email)
+    #     except User.DoesNotExist:
+    #         user=None
+    #     if user is None:      
+    #         user = User(
+    #             name      = validated_data.get('name'),
+    #             email     = validated_data.get('email'),
+    #             phone     = validated_data.get('phone'),
+    #             )
+                    
+    #         user.set_password(validated_data.get('password'))
+    #         user.is_active = True 
+    #         user.save()
+    #         return user
+    
+    # def create(self,validated_data):   
+    #     user_obj = Member(
+    #         user      = validated_data.get('user'),
+    #         company     = validated_data.get('company'),
+    #         company_role     = validated_data.get('company_role'),
+    #         )
+    #     user_obj.save()
+    #     return user_obj
 
 
 
