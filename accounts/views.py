@@ -194,7 +194,7 @@ class MemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
         def destroy(self, request, *args, **kwargs):
             return super().destroy(request, *args, **kwargs)
 
-
+        
 
 
 # class MemberListView(generics.ListCreateAPIView):
