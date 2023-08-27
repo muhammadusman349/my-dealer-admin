@@ -116,10 +116,10 @@ class Loginserializer(serializers.Serializer):
         return attr
    
 class MemberSerializer(serializers.ModelSerializer):
-    # name= serializers.CharField(required = False, allow_blank= True)
-    # email= serializers.EmailField(required = False, allow_blank= True)
-    # phone= serializers.CharField(required = False, allow_blank= True)
-    # password= serializers.CharField(required = False, allow_blank= True)
+    name= serializers.CharField(required = False, allow_blank= True)
+    email= serializers.EmailField(required = False, allow_blank= True)
+    phone= serializers.CharField(required = False, allow_blank= True)
+    password= serializers.CharField(required = False, allow_blank= True)
     class Meta:
         model = Member
         fields = (
@@ -127,36 +127,37 @@ class MemberSerializer(serializers.ModelSerializer):
                'user',
                'company',
                'company_role',
-            #    'name',
-            #    'email',
-            #    'phone',
-            #    'password',
+               'name',
+               'email',
+               'phone',
+               'password',
                'is_owner',
                'is_approved',  
         )
-    # def create(self,validated_data):
-    #     name = validated_data.pop('name')
-    #     email = validated_data.pop('email')
-    #     phone = validated_data.pop('phone')
-    #     password = validated_data.pop('password')
+    def create(self,validated_data):
+        print("validate",validated_data)
+        # name = validated_data.pop('name')
+        email = validated_data.pop('email', "")
+        # phone = validated_data.pop('phone')
+        password = validated_data.pop('password', "")
 
-    #     try:
-    #         user = User.objects.get(email__iexact=email)
-    #     except User.DoesNotExist:
-    #         user=None
-    #     if user is None:      
-    #         user = User(
-    #             name=name,
-    #             email=email,
-    #             phone=phone,
-    #             )
+        try:
+            user = User.objects.get(email__iexact=email)
+        except User.DoesNotExist:
+            user=None
+        if user is None:      
+            user = User(
+                name=user.name,
+                email=email,
+                phone=user,
+                )
                     
-    #         user.set_password(password)
-    #         user.is_active = True 
-    #         user.save()
-    #         return user
-        # qs = Member.objects.create(user=user, company_role=validated_data.get("company_role"))
-        # return qs
+            user.set_password(password)
+            user.is_active = True 
+            user.save()
+            return user
+        qs = Member.objects.create(user=user, company_role=validated_data.get("company_role"))
+        return qs
 
 
 

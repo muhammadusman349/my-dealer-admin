@@ -157,34 +157,36 @@ class MemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
         def get_queryset(self):
             return super().get_queryset()
         
-        # def post(self, request, *args, **kwargs):
-        #     return super().post(request, *args, **kwargs)
-        def post(self, request, format=None):
-                # Check if the user already exists then create member
-                try:
-                    user = User.objects.get(email=request.data['email'])
-                    user_serializer = RegistrationSerializer(user)
-                    member_data = {'user': user.id}  
-                    member_serializer = MemberSerializer(data=member_data)
-                    if member_serializer.is_valid():
-                        member_serializer.save()
-                    return Response({'user': user_serializer.data, 'member': member_serializer.data, 'message': 'User already exists But Member is created'})
+        def post(self, request, *args, **kwargs):
+            return super().post(request, *args, **kwargs)
+        
+        
+        # def post(self, request, format=None):
+        #         # Check if the user already exists then create member
+        #         try:
+        #             user = User.objects.get(email=request.data['email'])
+        #             user_serializer = RegistrationSerializer(user)
+        #             member_data = {'user': user.id}  
+        #             member_serializer = MemberSerializer(data=member_data)
+        #             if member_serializer.is_valid():
+        #                 member_serializer.save()
+        #             return Response({'user': user_serializer.data, 'member': member_serializer.data, 'message': 'User already exists But Member is created'})
                     
-                except User.DoesNotExist:
-                    pass
+        #         except User.DoesNotExist:
+        #             pass
 
                 # User doesn't exist, create both user and member
-                user_serializer = RegistrationSerializer(data=request.data)
-                if user_serializer.is_valid():
-                    user = user_serializer.save()
-                    member_data = {'user': user.id} 
-                    member_serializer = MemberSerializer(data=member_data)
-                    if member_serializer.is_valid():
-                        member_serializer.save()
-                        return Response({'user': user_serializer.data, 'member': member_serializer.data, 'message': 'User and member created successfully.'}, status=status.HTTP_201_CREATED)
-                    else:
-                        return Response(member_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                # user_serializer = RegistrationSerializer(data=request.data)
+                # if user_serializer.is_valid():
+                #     user = user_serializer.save()
+                #     member_data = {'user': user.id} 
+                #     member_serializer = MemberSerializer(data=member_data)
+                #     if member_serializer.is_valid():
+                #         member_serializer.save()
+                #         return Response({'user': user_serializer.data, 'member': member_serializer.data, 'message': 'User and member created successfully.'}, status=status.HTTP_201_CREATED)
+                #     else:
+                #         return Response(member_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                # return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                     
              
         def put(self, request, *args, **kwargs):
@@ -197,22 +199,6 @@ class MemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
             return super().destroy(request, *args, **kwargs)
 
 
-
-
-# class MemberListView(generics.ListCreateAPIView):
-#         permission_classes      = [permissions.IsAuthenticated]
-#         serializer_class        = MemberSerializer
-#         queryset                = Member.objects.all()
-#         lookup_field            = 'id'
-
-
-# class MemberDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     permission_classes      = [permissions.IsAuthenticated]
-#     serializer_class        = MemberSerializer
-#     queryset                = Member.objects.all()
-
- 
-    
 # class UserView(generics.ListAPIView):
 #     permission_classes      = [permissions.IsAuthenticated]
 #     serializer_class        = UserListSerializer
