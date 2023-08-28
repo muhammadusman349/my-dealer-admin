@@ -127,6 +127,8 @@ class MemberSerializer(serializers.ModelSerializer):
                'user',
                'company',
                'company_role',
+               'SalesRepresentative_role',
+               'member_of',
                'name',
                'email',
                'phone',
@@ -136,29 +138,37 @@ class MemberSerializer(serializers.ModelSerializer):
         )
     def create(self,validated_data):
         print("validate",validated_data)
-        # name = validated_data.pop('name')
-        email = validated_data.pop('email', "")
-        # phone = validated_data.pop('phone')
-        password = validated_data.pop('password', "")
+        name = validated_data.pop('name',"")
+        email = validated_data.pop('email',"")
+        phone = validated_data.pop('phone',"")
+        password = validated_data.pop('password',"")
 
         try:
-            user = User.objects.get(email__iexact=email)
+            user = User.objects.get(email=email)
         except User.DoesNotExist:
             user=None
-        if user is None:      
+        if user is None:  
+
             user = User(
-                name=user.name,
+                name=name,
                 email=email,
-                phone=user,
-                )
-                    
+                phone=phone,
+                )        
             user.set_password(password)
             user.is_active = True 
             user.save()
             return user
-        qs = Member.objects.create(user=user, company_role=validated_data.get("company_role"))
+      
+        # qs = Member.objects.create(user=user ,member_of=validated_data.get("member_of"),company_role=validated_data.get("company_role"),
+        #                            SalesRepresentative_role=validated_data.get("SalesRepresentative_role"))
+        qs = Member()
+        qs.user = user
+        qs.company= validated_data.get('company')
+        qs.member_of =validated_data.get("member_of")
+        qs.company_role = validated_data.get("company_role")
+        qs.SalesRepresentative_role = validated_data.get("SalesRepresentative_role")
+        qs.save()
         return qs
-
 
 
 # class generateKey:

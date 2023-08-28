@@ -1,1 +1,0 @@
-user_choices=[('admin',"Admin"),("dealer","Dealer"),("repair_facility","Repair Facility"),("sales_representative","Sales Representative"),("agency","Agency")]

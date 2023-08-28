@@ -1,7 +1,7 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,PermissionsMixin)
-from .utils import Company_permission_choices,Sales_representative_choices
+from .utils import Company_permission_choices,Sales_representative_choices,user_choices
 from django.db import models
-from .import user_choices
+
 # Create your models here.
 
 class UserManager(BaseUserManager):

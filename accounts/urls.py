@@ -22,7 +22,7 @@ urlpatterns = [
     path('<int:m_id>/company_role/',                          CompanyRoleView.as_view(),              name='CompanyRole-listcreate-view'),
     path('<int:m_id>/company_role/<int:id>/',                 CompanyRoleView.as_view(),              name='CompanyRole-detail-view'),
 
-    path('member/',                                           MemberView.as_view(),                   name='Member-listcreate-view'),
+    path('<int:m_id>/member/',                                           MemberView.as_view(),                   name='Member-listcreate-view'),
     path('<int:m_id>/member/<int:id>/',                       MemberView.as_view(),                   name='Member-detail-view'),
     path('<int:m_id>/SalesRepresentativeRole/',               SalesRepresentativeView.as_view(),      name='SalesRepresentativeRole-listcreate-view'),
     path('<int:m_id>/SalesRepresentativeRole/<int:id>/',      SalesRepresentativeView.as_view(),      name='SalesRepresentativeRole-detail-view'),

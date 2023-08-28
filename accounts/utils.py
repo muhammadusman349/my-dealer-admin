@@ -22,3 +22,5 @@ Sales_representative_choices = [
                     ('can_delete_admin_member','can delete admin member'),
 
 ]
+
+user_choices=[('admin',"Admin"),("dealer","Dealer"),("repair_facility","Repair Facility"),("sales_representative","Sales Representative"),("agency","Agency")]

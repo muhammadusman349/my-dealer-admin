@@ -84,9 +84,12 @@ class SalesRepresentativeView(generics.ListCreateAPIView,generics.RetrieveUpdate
 
         def get_queryset(self,*args,**kwargs):
             member_id = self.kwargs.get("m_id","")
+            print("member_id",member_id)
             member = Member.objects.get(id=member_id)
-            queryset = self.queryset
+            print("member",member)
+            # queryset = self.queryset
             queryset= SalesRepresentativeRole.objects.filter(company__id=member.company.id)
+            print("whar the response",queryset)
             return queryset
 
         def post(self, request, *args, **kwargs):
@@ -154,41 +157,16 @@ class MemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
             else:
                 return self.list(request, *args, **kwargs)
 
-        def get_queryset(self):
-            return super().get_queryset()
-        
         def post(self, request, *args, **kwargs):
-            return super().post(request, *args, **kwargs)
-        
-        
-        # def post(self, request, format=None):
-        #         # Check if the user already exists then create member
-        #         try:
-        #             user = User.objects.get(email=request.data['email'])
-        #             user_serializer = RegistrationSerializer(user)
-        #             member_data = {'user': user.id}  
-        #             member_serializer = MemberSerializer(data=member_data)
-        #             if member_serializer.is_valid():
-        #                 member_serializer.save()
-        #             return Response({'user': user_serializer.data, 'member': member_serializer.data, 'message': 'User already exists But Member is created'})
-                    
-        #         except User.DoesNotExist:
-        #             pass
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
+            serializer = MemberSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save(company= member.company) 
+                return Response(serializer.data,status=status.HTTP_200_OK) 
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
 
-                # User doesn't exist, create both user and member
-                # user_serializer = RegistrationSerializer(data=request.data)
-                # if user_serializer.is_valid():
-                #     user = user_serializer.save()
-                #     member_data = {'user': user.id} 
-                #     member_serializer = MemberSerializer(data=member_data)
-                #     if member_serializer.is_valid():
-                #         member_serializer.save()
-                #         return Response({'user': user_serializer.data, 'member': member_serializer.data, 'message': 'User and member created successfully.'}, status=status.HTTP_201_CREATED)
-                #     else:
-                #         return Response(member_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                # return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                    
-             
+           
         def put(self, request, *args, **kwargs):
             return super().put(request, *args, **kwargs)
         
@@ -198,7 +176,7 @@ class MemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
         def destroy(self, request, *args, **kwargs):
             return super().destroy(request, *args, **kwargs)
 
-
+            
 # class UserView(generics.ListAPIView):
 #     permission_classes      = [permissions.IsAuthenticated]
 #     serializer_class        = UserListSerializer
