@@ -126,7 +126,7 @@ class Member(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,null=True,blank=True)
     company_role = models.ForeignKey(CompanyRole,on_delete=models.CASCADE,null=True,blank=True)
     SalesRepresentative_role = models.ForeignKey(SalesRepresentativeRole,on_delete=models.CASCADE,null=True,blank=True)
-    member_of = models.CharField(max_length=50, choices=user_choices)
+    member_of = models.CharField(max_length=50, choices=user_choices, default=user_choices)
     is_owner = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
 
