@@ -147,8 +147,7 @@ class MemberSerializer(serializers.ModelSerializer):
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             user=None
-        if user is None:  
-
+        if user is None:
             user = User(
                 name=name,
                 email=email,
@@ -158,17 +157,18 @@ class MemberSerializer(serializers.ModelSerializer):
             user.is_active = True 
             user.save()
             return user
-      
+           
         # qs = Member.objects.create(user=user ,member_of=validated_data.get("member_of"),company_role=validated_data.get("company_role"),
         #                            SalesRepresentative_role=validated_data.get("SalesRepresentative_role"))
-        qs = Member()
-        qs.user = user
-        qs.company= validated_data.get('company')
-        qs.member_of =validated_data.get("member_of")
-        qs.company_role = validated_data.get("company_role")
-        qs.SalesRepresentative_role = validated_data.get("SalesRepresentative_role")
-        qs.save()
-        return qs
+        
+        queryset = Member()
+        queryset.user = user
+        queryset.company= validated_data.get('company')
+        queryset.member_of =validated_data.get("member_of")
+        queryset.company_role = validated_data.get("company_role")
+        queryset.SalesRepresentative_role = validated_data.get("SalesRepresentative_role")
+        queryset.save()
+        return queryset
 
 
 # class generateKey:
