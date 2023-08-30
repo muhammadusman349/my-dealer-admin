@@ -199,7 +199,14 @@ class DealerView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
                 return self.list(request, *args, **kwargs)
 
         def post(self, request, *args, **kwargs):
-            return super().post(request, *args, **kwargs)
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
+            print("member",member)
+            serializer = DealerSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save(company= member.company) 
+                return Response(serializer.data,status=status.HTTP_200_OK) 
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
         def put(self, request, *args, **kwargs):
             return super().put(request, *args, **kwargs)
@@ -209,3 +216,9 @@ class DealerView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
         
         def delete(self, request, *args, **kwargs):
             return super().delete(request, *args, **kwargs)
+        
+
+
+# if member.member_of == USERCHOICES.SALES_REPRESENTATIVE:
+#             dealer_ids = Dealer.objects.filter(external_admin__id=external_admin.id, sales_representative__id=member.id).values_list('id')
+#             queryset = queryset.filter(dealer__in=dealer_ids)
