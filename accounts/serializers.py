@@ -180,6 +180,7 @@ class DealerSerializer(serializers.ModelSerializer):
         model = Dealer
         fields = (
                'id',
+               'company',
                'full_name',
                'email',
                'country',
