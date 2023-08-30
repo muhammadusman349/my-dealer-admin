@@ -123,8 +123,8 @@ class User(AbstractBaseUser,PermissionsMixin):
 class Member(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     company = models.ForeignKey(Company,on_delete=models.CASCADE,null=True,blank=True)
-    company_role = models.ForeignKey(CompanyRole,on_delete=models.CASCADE,null=True,blank=True)
-    SalesRepresentative_role = models.ForeignKey(SalesRepresentativeRole,on_delete=models.CASCADE,null=True,blank=True)
+    company_role = models.ForeignKey(CompanyRole,on_delete=models.SET_NULL,null=True,blank=True)
+    SalesRepresentative_role = models.ForeignKey(SalesRepresentativeRole,on_delete=models.SET_NULL,null=True,blank=True)
     member_of = models.CharField(max_length=50, choices=user_choices, default=user_choices)
     is_owner = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
@@ -135,6 +135,7 @@ class Member(models.Model):
 
 
 class Dealer(models.Model):
+    company = models.ForeignKey(Company,on_delete=models.CASCADE,null=True,blank=True)
     full_name = models.CharField(max_length=120)
     email = models.EmailField(max_length=255,unique=True)
     country = models.CharField(max_length=220)
@@ -153,7 +154,7 @@ class Dealer(models.Model):
     approved_labor_rate = models.IntegerField()
     max_loss_ratio_for_auto_approval = models.IntegerField()
     is_part_of_agency = models.BooleanField(default=False)
-    sale_representative = models.ForeignKey(SalesRepresentativeRole,on_delete=models.CASCADE)
+    sale_representative = models.ForeignKey(Member,on_delete=models.CASCADE,null=True,blank=True)
     producer_type = models.CharField(max_length=50,choices=producer_type,default=producer_type)
     agent_code = models.CharField(max_length=120)
     agent_name = models.CharField(max_length=120)
