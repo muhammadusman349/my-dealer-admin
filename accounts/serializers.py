@@ -1,11 +1,15 @@
-from accounts.models import User, OtpVerify,Company,CompanyPermission,CompanyRole,Member,SalesRepresentativeRole,SalesRepresentativePermission
+from accounts.models import (User,
+                             Company,
+                             CompanyPermission,
+                             CompanyRole,
+                             Member,
+                             SalesRepresentativeRole,
+                             SalesRepresentativePermission,
+                             Dealer
+                            )
 from rest_framework import serializers,status
 from rest_framework_simplejwt.tokens import RefreshToken
-import pyotp
-import base64
-import random
-import string
-import time
+
 
 class CompanyRoleSerializer(serializers.ModelSerializer):
     
@@ -103,6 +107,8 @@ class Loginserializer(serializers.Serializer):
                 "Company id":member.company.id,
                 "Company Role Name":member.company_role.name,
                 "Company Role id":member.company_role.id,
+                "SR Role Name":member.SalesRepresentative_role.name,
+                "SR Role id":member.SalesRepresentative_role.id,
                 "Owner":member.is_owner
             }
             member_list.append(data_dict)
@@ -156,10 +162,7 @@ class MemberSerializer(serializers.ModelSerializer):
             user.set_password(password)
             user.is_active = True 
             user.save()
-            return user
-           
-        # qs = Member.objects.create(user=user ,member_of=validated_data.get("member_of"),company_role=validated_data.get("company_role"),
-        #                            SalesRepresentative_role=validated_data.get("SalesRepresentative_role"))
+            # return user
         
         queryset = Member()
         queryset.user = user
@@ -167,119 +170,60 @@ class MemberSerializer(serializers.ModelSerializer):
         queryset.member_of =validated_data.get("member_of")
         queryset.company_role = validated_data.get("company_role")
         queryset.SalesRepresentative_role = validated_data.get("SalesRepresentative_role")
+        queryset.is_owner= validated_data.get('is_owner')
+        queryset.is_approved= validated_data.get('is_approved')
         queryset.save()
-        return queryset
+        return queryset 
 
-
-# class generateKey:
-#     @staticmethod
-#     def return_value(user_obj):
-#         timestamp = str(int(time.time()))
-#         user_id = str(user_obj.id)
-#         random_string = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
-#         return timestamp + user_id + random_string
-    
-# class UserListSerializer(serializers.ModelSerializer):
-#     password2 = serializers.CharField(style={"input_type":"password"},write_only=True)
-    
-#     class Meta:
-#         model = User
-#         fields=(
-#             'id',
-#             'name',
-#             'email',
-#             'phone',
-#             'password',
-#             'password2',
-#             'created_at',
-#             'updated_at',
-#             )
-#         read_only_fields=["created_at","updated_at"]
-#         extra_kwargs = { 
-#                         'password': {'write_only': True},
-
-#                         } 
-
-
-
-
-# class ChangePasswordSerializer(serializers.Serializer):
-#     old_password = serializers.CharField(required=True)
-#     new_password = serializers.CharField(required=True)
-
-#     def validate(self, attrs):
-#         new_password = attrs.get("new_password", None)
-#         old_password = attrs.get("old_password", None)
-#         try:
-#             user = User.objects.get(email=str(self.context['user']))
-#         except User.DoesNotExist:
-#             raise serializers.ValidationError(
-#                 {"error ": "User not found."})
-#         if not user.check_password(old_password):
-#             raise serializers.ValidationError(
-#                 {"error": "Incorrect Password"})
-#         if new_password and len(new_password) > 5:
-#             if user.check_password(new_password):
-#                 raise serializers.ValidationError(
-#                     {"error": "New password should not be same as old_password"})
-#         else:
-#             raise serializers.ValidationError(
-#                 {"error": "Minimum length of new Password should be greater than 5"})
-#         return attrs
-
-#     def create(self, validated_data):    
-#         user = self.context['user']
-#         user.set_password(validated_data.get("new_password"))
-#         user.save()
-#         return validated_data
-    
-
-
-# class ForgetPasswordSerializer(serializers.Serializer):
-#     email = serializers.EmailField(max_length=255)
-#     def validate(self, attrs):
-#         email = attrs.get("email", None)
-#         if email is not None:
-#             try:
-#                 userObj = User.objects.get(email__iexact=email)
-#                 otp_obj = OtpVerify.objects.filter(user__id=userObj.id).first()
-#                 if otp_obj:
-#                     otp_obj.delete()
-#                 key = base64.b32encode(generateKey.return_value(userObj).encode())  
-#                 otp_key = pyotp.TOTP(key)  
-#                 otp = otp_key.at(6)
-#                 otp_obj = OtpVerify()
-#                 otp_obj.user = userObj
-#                 otp_obj.otp = otp
-#                 otp_obj.save()
-                
-#             except Exception as e:
-#                 print("Exception", e) 
-#                 raise serializers.ValidationError(
-#                     {"email": "Valid email is Required"})
-#         else:
-#             raise serializers.ValidationError({"email": "email is required"})
-#         return attrs
-
-# class ResetPasswordSerializer(serializers.Serializer):
-#     otp = serializers.CharField(required=True)
-#     password = serializers.CharField(required=True, write_only=True)
-
-#     def validate(self, attrs):
-#         otp = attrs.get("otp", None)
-#         password = attrs.get("password", None)
-#         if otp:
-#             try:
-#                 otpobj = OtpVerify.objects.filter(otp=otp).first()
-#                 if otpobj:
-#                     otpobj.user.set_password(password)
-#                     otpobj.delete()
-#                     otpobj.user.save()
-#                 else:
-#                     raise OtpVerify.DoesNotExist
-#             except OtpVerify.DoesNotExist:
-#                 raise serializers.ValidationError(
-#                     {"error": "Valid OTP  is Required"})
-#         else:
-#             raise serializers.ValidationError({"error": "email is required"})
-#         return attrs
+class DealerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dealer
+        fields = (
+               'id',
+               'full_name',
+               'email',
+               'country',
+               'city',
+               'state',
+               'zip_code',
+               'address',
+               'phone',
+               'fax',
+               'dealer_prefix',
+               'billing_cycle',
+               'ach_fee',
+               'logo',
+               'max_claim_for_auto_approval',
+               'cpi_max_claim_for_auto_approval',
+               'approved_labor_rate',
+               'max_loss_ratio_for_auto_approval',
+               'is_part_of_agency',
+               'sale_representative',
+               'producer_type',
+               'agent_code',
+               'agent_name',
+               'producer_start_date',
+               'terminated',
+               'sale_tax_on_part',
+               'tax_on_parts',
+               'sale_tax_on_labor',
+               'tax_on_labor',
+               'sale_tax_on_total',
+               'tax_on_total',
+               'part_number_used_for_claim_review',
+               'payment_method',
+               'stripe_customer_id',
+               'automated_approval',
+               'requires_customer_approval',
+               'pay_by_card_only',
+               'enable_lightspeed',
+               'lightspeed_username',
+               'lightspeed_password',
+               'lightspeed_cmf',
+               'has_service_department',
+               'repair_order',
+               'heading_1',
+               'heading_2',
+               'message',
+               'dealer_note',  
+        )

@@ -1,5 +1,11 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,PermissionsMixin)
-from .utils import Company_permission_choices,Sales_representative_choices,user_choices
+from .utils import (Company_permission_choices,
+                    Sales_representative_choices,
+                    user_choices,
+                    producer_type,
+                    claim_review_choices,
+                    payment_method_choices,
+                    )
 from django.db import models
 
 # Create your models here.
@@ -111,14 +117,7 @@ class User(AbstractBaseUser,PermissionsMixin):
         return self.is_superuser
     
     def has_module_perms(self, app_label):
-        return True
-
-class OtpVerify(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    otp = models.IntegerField()
-    
-    def __str__(self):
-        return str(self.user)     
+        return True    
 
 
 class Member(models.Model):
@@ -132,6 +131,59 @@ class Member(models.Model):
 
     def __str__(self):
         return str(self.user)
+    
+
+
+class Dealer(models.Model):
+    full_name = models.CharField(max_length=120)
+    email = models.EmailField(max_length=255,unique=True)
+    country = models.CharField(max_length=220)
+    city = models.CharField(max_length=220)
+    state = models.CharField(max_length=220)
+    zip_code = models.CharField(max_length=120)
+    address = models.CharField(max_length=256)
+    phone = models.CharField(max_length=120,null=True)
+    fax = models.CharField(max_length=120)
+    dealer_prefix = models.CharField(max_length=120)
+    billing_cycle = models.IntegerField()
+    ach_fee = models.IntegerField()
+    logo = models.ImageField(upload_to="Logo/",verbose_name='Logo',null=True,blank=True)
+    max_claim_for_auto_approval = models.IntegerField()
+    cpi_max_claim_for_auto_approval = models.IntegerField()
+    approved_labor_rate = models.IntegerField()
+    max_loss_ratio_for_auto_approval = models.IntegerField()
+    is_part_of_agency = models.BooleanField(default=False)
+    sale_representative = models.ForeignKey(SalesRepresentativeRole,on_delete=models.CASCADE)
+    producer_type = models.CharField(max_length=50,choices=producer_type,default=producer_type)
+    agent_code = models.CharField(max_length=120)
+    agent_name = models.CharField(max_length=120)
+    producer_start_date = models.DateField(auto_now_add=False)
+    terminated = models.BooleanField(default=False)
+    sale_tax_on_part = models.BooleanField(default=False)
+    tax_on_parts =models.IntegerField()
+    sale_tax_on_labor = models.BooleanField(default=False)
+    tax_on_labor = models.IntegerField()
+    sale_tax_on_total = models.BooleanField(default=False)
+    tax_on_total = models.IntegerField()
+    part_number_used_for_claim_review = models.CharField(max_length=50,choices=claim_review_choices,default=claim_review_choices)
+    payment_method = models.CharField(max_length=50,choices=payment_method_choices,default=payment_method_choices)
+    stripe_customer_id = models.CharField(max_length=156)
+    automated_approval = models.BooleanField(default=False)
+    requires_customer_approval = models.BooleanField(default=False)
+    pay_by_card_only = models.BooleanField(default=False)
+    enable_lightspeed = models.BooleanField(default=False)
+    lightspeed_username = models.CharField(max_length=156)
+    lightspeed_password = models.CharField(max_length=128)
+    lightspeed_cmf = models.CharField(max_length=120)
+    has_service_department = models.BooleanField(default=False)
+    repair_order = models.BooleanField(default=False)
+    heading_1 = models.CharField(max_length=120)
+    heading_2 = models.CharField(max_length=120)
+    message = models.TextField()
+    dealer_note = models.TextField()
+
+    def __str__(self):
+        return str(self.full_name)
 
 def setup_permission():
     for i in Company_permission_choices:

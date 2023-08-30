@@ -1,7 +1,15 @@
 # from django.shortcuts import render
 from rest_framework import generics,status
 from rest_framework.response import Response
-from .models import User,Company,CompanyPermission,CompanyRole,Member,SalesRepresentativeRole,SalesRepresentativePermission
+from .models import (User,
+                     Company,
+                     CompanyPermission,
+                     CompanyRole,
+                     Member,
+                     SalesRepresentativeRole,
+                     SalesRepresentativePermission,
+                     Dealer
+                    )
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions
 from django.contrib.auth.decorators import permission_required
@@ -9,13 +17,11 @@ from .serializers import (      RegistrationSerializer,
                                 Loginserializer,
                                 CompanyRoleSerializer,
                                 MemberSerializer,
-                                SalesRepresentativeSerializer
+                                SalesRepresentativeSerializer,
+                                DealerSerializer
                          )
 
-                                #  ChangePasswordSerializer,
-                                #  ForgetPasswordSerializer,
-                                #  ResetPasswordSerializer,
-                                #  UserListSerializer,
+                               
 class EmailValidate(generics.CreateAPIView):
         permission_classes      = [permissions.IsAuthenticated]
         queryset                = User.objects.all()
@@ -69,8 +75,8 @@ class CompanyRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyA
         def patch(self, request, *args, **kwargs):
             return super().patch(request, *args, **kwargs)
         
-        def destroy(self, request, *args, **kwargs):
-            return super().destroy(request, *args, **kwargs)
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
 
 class SalesRepresentativeView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
         permission_classes      = [permissions.IsAuthenticated]
@@ -79,7 +85,10 @@ class SalesRepresentativeView(generics.ListCreateAPIView,generics.RetrieveUpdate
         lookup_field            = 'id'
 
         def get(self, request, *args, **kwargs):
-            return super().get(request, *args, **kwargs)
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
         
 
         def get_queryset(self,*args,**kwargs):
@@ -95,6 +104,7 @@ class SalesRepresentativeView(generics.ListCreateAPIView,generics.RetrieveUpdate
         def post(self, request, *args, **kwargs):
             member_id = self.kwargs.get("m_id","")
             member = Member.objects.get(id=member_id)
+            print("member",member)
             serializer = SalesRepresentativeSerializer(data = request.data)
             if serializer.is_valid():
                 serializer.save(company= member.company) 
@@ -109,8 +119,8 @@ class SalesRepresentativeView(generics.ListCreateAPIView,generics.RetrieveUpdate
             return super().patch(request, *args, **kwargs)
         
 
-        def destroy(self, request, *args, **kwargs):
-            return super().destroy(request, *args, **kwargs)
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
     
 class RegistrationApi(generics.GenericAPIView):
     permission_classes      = [permissions.IsAuthenticated]
@@ -173,72 +183,29 @@ class MemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
         def patch(self, request, *args, **kwargs):
             return super().patch(request, *args, **kwargs)
         
-        def destroy(self, request, *args, **kwargs):
-            return super().destroy(request, *args, **kwargs)
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
 
-            
-# class UserView(generics.ListAPIView):
-#     permission_classes      = [permissions.IsAuthenticated]
-#     serializer_class        = UserListSerializer
-#     queryset                = User.objects.all()
-#     lookup_field            = 'id'
-  
-#     def get(self, request, *args, **kwargs):
-#         if 'id' in self.kwargs:
-#             return self.retrieve(request, *args, **kwargs)
-#         else:
-#             return self.list(request, *args, **kwargs)
+class DealerView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = DealerSerializer
+        queryset                = Dealer.objects.all()
+        lookup_field            = 'id'
 
-# class UserApproveView(generics.GenericAPIView):
-#     permission_classes      = [permissions.IsAuthenticated]  
-#     def post(self,request,*args,**kwargs):
-#         try:
-#             id=self.request.query_params.get('id',None)
-#             user=User.objects.get(id=id)
-#             user.is_verified=True
-#             user.is_approved = True
-#             user.save()
-#             return Response({"Message":"User is approve "},status=status.HTTP_200_OK)
-#         except User.DoesNotExist:
-#             return Response({"Error":"User is Not Exist "},status=status.HTTP_400_BAD_REQUEST)    
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
 
+        def post(self, request, *args, **kwargs):
+            return super().post(request, *args, **kwargs)
 
-# class ChangePasswordView(generics.GenericAPIView):
-#     permission_classes = []
-#     serializer_class = ChangePasswordSerializer
-
-#     def post(self, request):
-#         serializer = self.serializer_class(data=request.data, context={'user': self.request.user})
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response({'password': ' password changed successfully '}, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# class ForgetPasswordView(generics.GenericAPIView):
-#     permission_classes = []
-#     serializer_class = ForgetPasswordSerializer
-
-#     def post(self, request):
-#         serializer = self.serializer_class(data=request.data)
-#         if serializer.is_valid():
-#             return Response({'opt': 'successfully send OTP '}, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-# class ResetPasswordView(generics.GenericAPIView):
-#     permission_classes = []
-#     serializer_class = ResetPasswordSerializer
-
-#     def post(self, request):
-#         serializer = self.serializer_class(data=request.data)
-#         if serializer.is_valid():
-#             return Response({'password': 'successfully set New Password '}, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-            # member_id = self.kwargs.get("m_id", "")
-            # member = self.get_member(member_id)
-            # if member.is_super_admin is False:
-            #     external_admin = self.get_external_admin(member)
-            #     request.data["external_admin"] = external_admin.id
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
