@@ -14,14 +14,43 @@ class CustomUserAdmin(UserAdmin):
     )
     list_display =['id','name','email']
     ordering = ('id',)
-    
+
+class CompanyAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','name','address')
+
+class CompanyPermissionAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','name')
+class CompanyRoleAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','company','name')
+
+class SalesRepresentativePermissionAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','name')
+
+class SalesRepresentativeRoleAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','company','name')    
+
+class DealerAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','full_name') #,'company')  
+    list_filter = ('id',) #'company')
+class MemberAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','user','company','company_role','member_of','is_owner','is_approved')  
+    list_filter = ('id','company','member_of','is_owner')
+
+
 admin.site.register(User,CustomUserAdmin)
-admin.site.register(Company)
-admin.site.register(CompanyPermission)
-admin.site.register(CompanyRole)
-admin.site.register(SalesRepresentativePermission)
-admin.site.register(SalesRepresentativeRole)
-admin.site.register(Member)
-admin.site.register(Dealer)
+admin.site.register(Company,CompanyAdmin)
+admin.site.register(CompanyPermission,CompanyPermissionAdmin)
+admin.site.register(CompanyRole,CompanyRoleAdmin)
+admin.site.register(SalesRepresentativePermission,SalesRepresentativePermissionAdmin)
+admin.site.register(SalesRepresentativeRole,SalesRepresentativeRoleAdmin)
+admin.site.register(Member,MemberAdmin)
+admin.site.register(Dealer,DealerAdmin)
 
 
