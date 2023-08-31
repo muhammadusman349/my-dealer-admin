@@ -832,3 +832,11 @@ from accounts.models import User,Member
 
 # print (tempJson)
 
+
+
+dic= {
+    
+    ('a','b','c'):"usman"
+}
+
+print(dic)
