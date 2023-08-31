@@ -1,6 +1,16 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin 
-from .models import User,Company,CompanyPermission,CompanyRole,Member,SalesRepresentativeRole,SalesRepresentativePermission,Dealer
+from .models import (User,
+                     Company,
+                     CompanyPermission,
+                     CompanyRole,
+                     Member,
+                     SalesRepresentativeRole,
+                     SalesRepresentativePermission,
+                     Dealer,
+                     DealerRole,
+                     DealerPermission
+                     )
 # Register your models here.
 
 
@@ -24,7 +34,7 @@ class CompanyPermissionAdmin(admin.ModelAdmin):
     list_display = ('id','name')
 class CompanyRoleAdmin(admin.ModelAdmin):
     ordering = ('id',)
-    list_display = ('id','company','name')
+    list_display = ('id','name')
 
 class SalesRepresentativePermissionAdmin(admin.ModelAdmin):
     ordering = ('id',)
@@ -32,12 +42,20 @@ class SalesRepresentativePermissionAdmin(admin.ModelAdmin):
 
 class SalesRepresentativeRoleAdmin(admin.ModelAdmin):
     ordering = ('id',)
-    list_display = ('id','company','name')    
+    list_display = ('id','name')    
 
 class DealerAdmin(admin.ModelAdmin):
     ordering = ('id',)
-    list_display = ('id','full_name') #,'company')  
-    list_filter = ('id',) #'company')
+    list_display = ('id','name','dealer_number','dealer_of')  
+    list_filter = ('dealer_of',) 
+
+class DealerRoleAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','name')  
+
+class DealerPermissionAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','name')
 class MemberAdmin(admin.ModelAdmin):
     ordering = ('id',)
     list_display = ('id','user','company','company_role','member_of','is_owner','is_approved')  
@@ -52,5 +70,5 @@ admin.site.register(SalesRepresentativePermission,SalesRepresentativePermissionA
 admin.site.register(SalesRepresentativeRole,SalesRepresentativeRoleAdmin)
 admin.site.register(Member,MemberAdmin)
 admin.site.register(Dealer,DealerAdmin)
-
-
+admin.site.register(DealerRole,DealerRoleAdmin)
+admin.site.register(DealerPermission,DealerPermissionAdmin)
