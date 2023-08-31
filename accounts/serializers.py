@@ -5,7 +5,9 @@ from accounts.models import (User,
                              Member,
                              SalesRepresentativeRole,
                              SalesRepresentativePermission,
-                             Dealer
+                             Dealer,
+                             DealerRole,
+                             DealerPermission
                             )
 from rest_framework import serializers,status
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -22,7 +24,7 @@ class CompanyRoleSerializer(serializers.ModelSerializer):
                 'permission',
         )
 
-class SalesRepresentativeSerializer(serializers.ModelSerializer):
+class SalesRepresentativeRoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = SalesRepresentativeRole
         fields = (
@@ -181,7 +183,7 @@ class DealerSerializer(serializers.ModelSerializer):
         fields = (
                'id',
                'company',
-               'full_name',
+               'name',
                'email',
                'country',
                'city',
@@ -192,6 +194,7 @@ class DealerSerializer(serializers.ModelSerializer):
                'fax',
                'dealer_prefix',
                'billing_cycle',
+               'dealer_number',
                'ach_fee',
                'logo',
                'max_claim_for_auto_approval',
@@ -228,3 +231,14 @@ class DealerSerializer(serializers.ModelSerializer):
                'message',
                'dealer_note',  
         )
+
+class DealerRoleSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model= DealerRole
+        fields = (
+                'id',
+                'company',
+                'name',
+                'permission',
+                )
