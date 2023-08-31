@@ -8,7 +8,8 @@ from .models import (User,
                      Member,
                      SalesRepresentativeRole,
                      SalesRepresentativePermission,
-                     Dealer
+                     Dealer,
+                     DealerRole
                     )
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions
@@ -17,8 +18,9 @@ from .serializers import (      RegistrationSerializer,
                                 Loginserializer,
                                 CompanyRoleSerializer,
                                 MemberSerializer,
-                                SalesRepresentativeSerializer,
-                                DealerSerializer
+                                SalesRepresentativeRoleSerializer,
+                                DealerSerializer,
+                                DealerRoleSerializer
                          )
 
                                
@@ -78,9 +80,9 @@ class CompanyRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyA
         def delete(self, request, *args, **kwargs):
             return super().delete(request, *args, **kwargs)
 
-class SalesRepresentativeView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+class SalesRepresentativeRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
         permission_classes      = [permissions.IsAuthenticated]
-        serializer_class        = SalesRepresentativeSerializer
+        serializer_class        = SalesRepresentativeRoleSerializer
         queryset                = SalesRepresentativeRole.objects.all()
         lookup_field            = 'id'
 
@@ -105,7 +107,7 @@ class SalesRepresentativeView(generics.ListCreateAPIView,generics.RetrieveUpdate
             member_id = self.kwargs.get("m_id","")
             member = Member.objects.get(id=member_id)
             print("member",member)
-            serializer = SalesRepresentativeSerializer(data = request.data)
+            serializer = SalesRepresentativeRoleSerializer(data = request.data)
             if serializer.is_valid():
                 serializer.save(company= member.company) 
                 return Response(serializer.data,status=status.HTTP_200_OK) 
@@ -201,7 +203,6 @@ class DealerView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
         def post(self, request, *args, **kwargs):
             member_id = self.kwargs.get("m_id","")
             member = Member.objects.get(id=member_id)
-            print("member",member)
             serializer = DealerSerializer(data = request.data)
             if serializer.is_valid():
                 serializer.save(company= member.company) 
@@ -216,9 +217,43 @@ class DealerView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
         
         def delete(self, request, *args, **kwargs):
             return super().delete(request, *args, **kwargs)
+
+
+
+class DealerRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = DealerRoleSerializer
+        queryset                = DealerRole.objects.all()
+        lookup_field            = 'id'
+
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
+
+        def get_queryset(self,*args,**kwargs):
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
+            queryset = self.queryset
+            queryset= DealerRole.objects.filter(company__id=member.company.id)
+            return queryset
+
+        def post(self, request, *args, **kwargs):
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
+            serializer = DealerRoleSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save(company= member.company) 
+                return Response(serializer.data,status=status.HTTP_200_OK) 
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+
         
-
-
-# if member.member_of == USERCHOICES.SALES_REPRESENTATIVE:
-#             dealer_ids = Dealer.objects.filter(external_admin__id=external_admin.id, sales_representative__id=member.id).values_list('id')
-#             queryset = queryset.filter(dealer__in=dealer_ids)
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
