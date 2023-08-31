@@ -1,10 +1,12 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,PermissionsMixin)
 from .utils import (Company_permission_choices,
                     Sales_representative_choices,
+                    Dealer_choices,
                     user_choices,
                     producer_type,
                     claim_review_choices,
                     payment_method_choices,
+                    dealer_of,
                     )
 from django.db import models
 
@@ -135,8 +137,9 @@ class Member(models.Model):
 
 
 class Dealer(models.Model):
-    company = models.ForeignKey(Company,on_delete=models.CASCADE,null=True,blank=True)
-    full_name = models.CharField(max_length=120)
+    company = models.ForeignKey(Company,on_delete=models.CASCADE)
+    dealer_of = models.CharField(max_length=50,choices=dealer_of,default=dealer_of)
+    name = models.CharField(max_length=120)
     email = models.EmailField(max_length=255,unique=True)
     country = models.CharField(max_length=220)
     city = models.CharField(max_length=220)
@@ -147,6 +150,7 @@ class Dealer(models.Model):
     fax = models.CharField(max_length=120)
     dealer_prefix = models.CharField(max_length=120)
     billing_cycle = models.IntegerField()
+    dealer_number = models.CharField(max_length=120,null=True,blank=True)
     ach_fee = models.IntegerField()
     logo = models.ImageField(upload_to="Logo/",verbose_name='Logo',null=True,blank=True)
     max_claim_for_auto_approval = models.IntegerField()
@@ -158,7 +162,8 @@ class Dealer(models.Model):
     producer_type = models.CharField(max_length=50,choices=producer_type,default=producer_type)
     agent_code = models.CharField(max_length=120)
     agent_name = models.CharField(max_length=120)
-    producer_start_date = models.DateField(auto_now_add=False)
+    producer_start_date = models.DateField()
+    producer_end_date = models.DateField(null=True,blank=True)
     terminated = models.BooleanField(default=False)
     sale_tax_on_part = models.BooleanField(default=False)
     tax_on_parts =models.IntegerField()
@@ -184,7 +189,22 @@ class Dealer(models.Model):
     dealer_note = models.TextField()
 
     def __str__(self):
-        return str(self.full_name)
+        return str(self.name)
+
+class DealerPermission(models.Model):
+    code = models.CharField(max_length=120)
+    name = models.CharField(max_length=120)
+ 
+    def __str__(self):
+        return (self.name)
+    
+class DealerRole(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    name = models.CharField(max_length=120)
+    permission = models.ManyToManyField(DealerPermission)
+
+    def __str__(self):
+        return str(self.name)
 
 def setup_permission():
     for i in Company_permission_choices:
@@ -192,9 +212,16 @@ def setup_permission():
             role,created = CompanyPermission.objects.get_or_create(code=i[0],name=i[1])
         except Exception as e:
             print("Exception",e)
+
     for i in Sales_representative_choices:
         try:
             role,created =SalesRepresentativePermission.objects.get_or_create(code=i[0],name=i[1])
+        except Exception as e:
+            print("Exception",e)
+
+    for i in Dealer_choices:
+        try:
+            role,created =DealerPermission.objects.get_or_create(code=i[0],name=i[1])
         except Exception as e:
             print("Exception",e)         
            
