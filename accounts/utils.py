@@ -37,6 +37,19 @@ Dealer_choices = [
 
 ]
 
+Agency_choices = [
+                    ('can_view_role','can view role'),
+                    ('can_add_role','can add role'),
+                    ('can_update_role','can update role'),
+                    ('can_delete_role','can delete role'),
+
+                    ('can_view_Agency_member','can view Agency member'),
+                    ('can_add_Agency_member','can add Agency member'),
+                    ('can_update_Agency_member','can update Agency member'),
+                    ('can_delete_Agency_member','can delete Agency member'),
+
+]
+
 
 user_choices=[('admin',"Admin"),('dealer','Dealer'),('repair_facility','Repair Facility'),('sales_representative','Sales Representative'),('agency','Agency')]
 

@@ -2,14 +2,13 @@
 from rest_framework import generics,status
 from rest_framework.response import Response
 from .models import (User,
-                     Company,
-                     CompanyPermission,
                      CompanyRole,
                      Member,
                      SalesRepresentativeRole,
-                     SalesRepresentativePermission,
                      Dealer,
-                     DealerRole
+                     DealerRole,
+                     Agency,
+                     AgencyRole
                     )
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions
@@ -20,7 +19,9 @@ from .serializers import (      RegistrationSerializer,
                                 MemberSerializer,
                                 SalesRepresentativeRoleSerializer,
                                 DealerSerializer,
-                                DealerRoleSerializer
+                                DealerRoleSerializer,
+                                AgencySerializer,
+                                AgencyRoleSerializer
                          )
 
                                
@@ -80,6 +81,30 @@ class CompanyRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyA
         def delete(self, request, *args, **kwargs):
             return super().delete(request, *args, **kwargs)
 
+class CompanyMemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = MemberSerializer
+        queryset                = Member.objects.all()
+        lookup_field            = 'id'
+
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
+
+        def post(self, request, *args, **kwargs):
+            return super().post(request, *args, **kwargs)
+
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
+
 class SalesRepresentativeRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
         permission_classes      = [permissions.IsAuthenticated]
         serializer_class        = SalesRepresentativeRoleSerializer
@@ -121,6 +146,31 @@ class SalesRepresentativeRoleView(generics.ListCreateAPIView,generics.RetrieveUp
             return super().patch(request, *args, **kwargs)
         
 
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
+
+
+class SalesRepresentativeMemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = MemberSerializer
+        queryset                = Member.objects.all()
+        lookup_field            = 'id'
+
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
+
+        def post(self, request, *args, **kwargs):
+            return super().post(request, *args, **kwargs)
+
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
         def delete(self, request, *args, **kwargs):
             return super().delete(request, *args, **kwargs)
     
@@ -218,6 +268,29 @@ class DealerView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIVie
         def delete(self, request, *args, **kwargs):
             return super().delete(request, *args, **kwargs)
 
+class DealerMemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = MemberSerializer
+        queryset                = Member.objects.all()
+        lookup_field            = 'id'
+
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
+
+        def post(self, request, *args, **kwargs):
+            return super().post(request, *args, **kwargs)
+
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
 
 
 class DealerRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
@@ -235,7 +308,6 @@ class DealerRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAP
         def get_queryset(self,*args,**kwargs):
             member_id = self.kwargs.get("m_id","")
             member = Member.objects.get(id=member_id)
-            queryset = self.queryset
             queryset= DealerRole.objects.filter(company__id=member.company.id)
             return queryset
 
@@ -249,6 +321,99 @@ class DealerRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAP
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
 
         
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
+
+class AgencyView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = AgencySerializer
+        queryset                = Agency.objects.all()
+        lookup_field            = 'id'
+
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
+
+        def post(self, request, *args, **kwargs):
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
+            serializer = AgencySerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save(company= member.company) 
+                return Response(serializer.data,status=status.HTTP_200_OK) 
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
+
+class AgencyRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = AgencyRoleSerializer
+        queryset                = AgencyRole.objects.all()
+        lookup_field            = 'id'
+
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
+
+        def get_queryset(self,*args,**kwargs):
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
+            queryset = self.queryset
+            queryset= AgencyRole.objects.filter(company__id=member.company.id)
+            return queryset
+
+        def post(self, request, *args, **kwargs):
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
+            serializer = AgencyRoleSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save(company= member.company) 
+                return Response(serializer.data,status=status.HTTP_200_OK) 
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+
+        
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
+
+
+class AgencyMemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = MemberSerializer
+        queryset                = Member.objects.all()
+        lookup_field            = 'id'
+
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
+
+        def post(self, request, *args, **kwargs):
+            return super().post(request, *args, **kwargs)
+
         def put(self, request, *args, **kwargs):
             return super().put(request, *args, **kwargs)
         

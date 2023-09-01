@@ -2,6 +2,7 @@ from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,Permis
 from .utils import (Company_permission_choices,
                     Sales_representative_choices,
                     Dealer_choices,
+                    Agency_choices,
                     user_choices,
                     producer_type,
                     claim_review_choices,
@@ -124,9 +125,13 @@ class User(AbstractBaseUser,PermissionsMixin):
 
 class Member(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
-    company = models.ForeignKey(Company,on_delete=models.CASCADE,null=True,blank=True)
+    company = models.ForeignKey(Company,on_delete=models.SET_NULL,null=True,blank=True)
     company_role = models.ForeignKey(CompanyRole,on_delete=models.SET_NULL,null=True,blank=True)
     SalesRepresentative_role = models.ForeignKey(SalesRepresentativeRole,on_delete=models.SET_NULL,null=True,blank=True)
+    dealer = models.ForeignKey('accounts.Dealer', on_delete=models.SET_NULL,null=True,blank=True)
+    dealer_role = models.ForeignKey('accounts.DealerRole', on_delete=models.SET_NULL,null=True,blank=True)
+    agency = models.ForeignKey('accounts.Agency', on_delete=models.SET_NULL,null=True,blank=True)
+    agency_role = models.ForeignKey('accounts.AgencyRole', on_delete=models.SET_NULL,null=True,blank=True)
     member_of = models.CharField(max_length=50, choices=user_choices, default=user_choices)
     is_owner = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
@@ -137,7 +142,7 @@ class Member(models.Model):
 
 
 class Dealer(models.Model):
-    company = models.ForeignKey(Company,on_delete=models.CASCADE)
+    company = models.ForeignKey(Company,on_delete=models.CASCADE,null=True,blank=True)
     dealer_of = models.CharField(max_length=50,choices=dealer_of,default=dealer_of)
     name = models.CharField(max_length=120)
     email = models.EmailField(max_length=255,unique=True)
@@ -158,7 +163,7 @@ class Dealer(models.Model):
     approved_labor_rate = models.IntegerField()
     max_loss_ratio_for_auto_approval = models.IntegerField()
     is_part_of_agency = models.BooleanField(default=False)
-    sale_representative = models.ForeignKey(Member,on_delete=models.CASCADE,null=True,blank=True)
+    sale_representative = models.ForeignKey(Member,on_delete=models.CASCADE,related_name='sr',null=True,blank=True)
     producer_type = models.CharField(max_length=50,choices=producer_type,default=producer_type)
     agent_code = models.CharField(max_length=120)
     agent_name = models.CharField(max_length=120)
@@ -205,6 +210,41 @@ class DealerRole(models.Model):
 
     def __str__(self):
         return str(self.name)
+    
+class Agency(models.Model):
+    company = models.ForeignKey(Company,on_delete=models.CASCADE,null=True,blank=True)
+    sales_representative = models.ForeignKey(Member,related_name='Sr',on_delete=models.SET_NULL,null=True,blank=True)
+    name = models.CharField(max_length=120)
+    country = models.CharField(max_length=220)
+    city = models.CharField(max_length=220)
+    state = models.CharField(max_length=220)
+    zip_code = models.CharField(max_length=120)
+    address = models.CharField(max_length=256)
+    phone = models.CharField(max_length=120,null=True)
+    fax = models.CharField(max_length=120) 
+    own_logo = models.ImageField(upload_to="Logo/",verbose_name='Logo',null=True,blank=True)
+    own_color = models.CharField(max_length=120)
+    own_favicon = models.ImageField(upload_to="favicon/",verbose_name='favicon',null=True,blank=True)
+
+    def __str__(self):
+        return str(self.name)
+    
+class AgencyPermission(models.Model):
+    code = models.CharField(max_length=120)
+    name = models.CharField(max_length=120)
+ 
+    def __str__(self):
+        return (self.name)
+    
+class AgencyRole(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    name = models.CharField(max_length=120)
+    permission = models.ManyToManyField(AgencyPermission)
+
+    def __str__(self):
+        return str(self.name)
+
+
 
 def setup_permission():
     for i in Company_permission_choices:
@@ -223,6 +263,13 @@ def setup_permission():
         try:
             role,created =DealerPermission.objects.get_or_create(code=i[0],name=i[1])
         except Exception as e:
-            print("Exception",e)         
+            print("Exception",e)    
+    
+    for i in Agency_choices:
+        try:
+            role,created =AgencyPermission.objects.get_or_create(code=i[0],name=i[1])
+        except Exception as e:
+            print("Exception",e) 
+
            
 setup_permission()

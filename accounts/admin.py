@@ -9,7 +9,10 @@ from .models import (User,
                      SalesRepresentativePermission,
                      Dealer,
                      DealerRole,
-                     DealerPermission
+                     DealerPermission,
+                     Agency,
+                     AgencyRole,
+                     AgencyPermission
                      )
 # Register your models here.
 
@@ -58,9 +61,20 @@ class DealerPermissionAdmin(admin.ModelAdmin):
     list_display = ('id','name')
 class MemberAdmin(admin.ModelAdmin):
     ordering = ('id',)
-    list_display = ('id','user','company','company_role','member_of','is_owner','is_approved')  
+    list_display = ('id','user','company','member_of','is_owner')  
     list_filter = ('id','company','member_of','is_owner')
 
+class AgencyAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','name')
+
+class AgencyRoleAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','name')
+
+class AgencyPermissionAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','name')
 
 admin.site.register(User,CustomUserAdmin)
 admin.site.register(Company,CompanyAdmin)
@@ -72,3 +86,6 @@ admin.site.register(Member,MemberAdmin)
 admin.site.register(Dealer,DealerAdmin)
 admin.site.register(DealerRole,DealerRoleAdmin)
 admin.site.register(DealerPermission,DealerPermissionAdmin)
+admin.site.register(Agency,AgencyAdmin)
+admin.site.register(AgencyRole,AgencyRoleAdmin)
+admin.site.register(AgencyPermission,AgencyPermissionAdmin)

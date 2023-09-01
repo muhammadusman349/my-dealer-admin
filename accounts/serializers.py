@@ -7,7 +7,9 @@ from accounts.models import (User,
                              SalesRepresentativePermission,
                              Dealer,
                              DealerRole,
-                             DealerPermission
+                             DealerPermission,
+                             Agency,
+                             AgencyRole
                             )
 from rest_framework import serializers,status
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -136,6 +138,10 @@ class MemberSerializer(serializers.ModelSerializer):
                'company',
                'company_role',
                'SalesRepresentative_role',
+               'dealer',
+               'dealer_role',
+               'agency',
+               'agency_role',
                'member_of',
                'name',
                'email',
@@ -164,7 +170,6 @@ class MemberSerializer(serializers.ModelSerializer):
             user.set_password(password)
             user.is_active = True 
             user.save()
-            # return user
         
         queryset = Member()
         queryset.user = user
@@ -172,6 +177,10 @@ class MemberSerializer(serializers.ModelSerializer):
         queryset.member_of =validated_data.get("member_of")
         queryset.company_role = validated_data.get("company_role")
         queryset.SalesRepresentative_role = validated_data.get("SalesRepresentative_role")
+        queryset.dealer = validated_data.get("dealer")
+        queryset.dealer_role = validated_data.get("dealer_role")
+        queryset.agency = validated_data.get("agency")
+        queryset.agency_role = validated_data.get("agency_role")
         queryset.is_owner= validated_data.get('is_owner')
         queryset.is_approved= validated_data.get('is_approved')
         queryset.save()
@@ -242,3 +251,33 @@ class DealerRoleSerializer(serializers.ModelSerializer):
                 'name',
                 'permission',
                 )
+
+class AgencySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Agency
+        fields = (
+            'id',
+            'company',
+            'sales_representative',
+            'name',
+            'country',
+            'city',
+            'state',
+            'zip_code',
+            'address',
+            'phone',
+            'fax',
+            'own_logo',
+            'own_color',
+            'own_favicon'
+        )
+
+class AgencyRoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AgencyRole
+        fields = (
+               'id',
+               'company',
+               'name',
+               'permission'
+        )
