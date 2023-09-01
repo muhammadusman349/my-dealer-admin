@@ -12,7 +12,10 @@ from .models import (User,
                      DealerPermission,
                      Agency,
                      AgencyRole,
-                     AgencyPermission
+                     AgencyPermission,
+                     RepairFacility,
+                     RepairFacilityRole,
+                     RepairFacilityPermission
                      )
 # Register your models here.
 
@@ -76,6 +79,18 @@ class AgencyPermissionAdmin(admin.ModelAdmin):
     ordering = ('id',)
     list_display = ('id','name')
 
+class RepairFacilityAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','name')
+
+class RepairFacilityRoleAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','name')
+
+class RepairFacilityPermissionAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    list_display = ('id','name')
+
 admin.site.register(User,CustomUserAdmin)
 admin.site.register(Company,CompanyAdmin)
 admin.site.register(CompanyPermission,CompanyPermissionAdmin)
@@ -89,3 +104,6 @@ admin.site.register(DealerPermission,DealerPermissionAdmin)
 admin.site.register(Agency,AgencyAdmin)
 admin.site.register(AgencyRole,AgencyRoleAdmin)
 admin.site.register(AgencyPermission,AgencyPermissionAdmin)
+admin.site.register(RepairFacility,RepairFacilityAdmin)
+admin.site.register(RepairFacilityRole,RepairFacilityRoleAdmin)
+admin.site.register(RepairFacilityPermission,RepairFacilityPermissionAdmin)

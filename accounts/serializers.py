@@ -1,15 +1,13 @@
 from accounts.models import (User,
-                             Company,
-                             CompanyPermission,
                              CompanyRole,
                              Member,
                              SalesRepresentativeRole,
-                             SalesRepresentativePermission,
                              Dealer,
                              DealerRole,
-                             DealerPermission,
                              Agency,
-                             AgencyRole
+                             AgencyRole,
+                             RepairFacility,
+                             RepairFacilityRole
                             )
 from rest_framework import serializers,status
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -142,6 +140,8 @@ class MemberSerializer(serializers.ModelSerializer):
                'dealer_role',
                'agency',
                'agency_role',
+               'repair_facility',
+               'repair_facility_role',
                'member_of',
                'name',
                'email',
@@ -150,6 +150,8 @@ class MemberSerializer(serializers.ModelSerializer):
                'is_owner',
                'is_approved',  
         )
+        extra_kwargs = {'company': {'required':False}}
+
     def create(self,validated_data):
         print("validate",validated_data)
         name = validated_data.pop('name',"")
@@ -181,6 +183,8 @@ class MemberSerializer(serializers.ModelSerializer):
         queryset.dealer_role = validated_data.get("dealer_role")
         queryset.agency = validated_data.get("agency")
         queryset.agency_role = validated_data.get("agency_role")
+        queryset.repair_facility = validated_data.get("repair_facility")
+        queryset.repair_facility_role = validated_data.get("repair_facility_role")
         queryset.is_owner= validated_data.get('is_owner')
         queryset.is_approved= validated_data.get('is_approved')
         queryset.save()
@@ -240,6 +244,8 @@ class DealerSerializer(serializers.ModelSerializer):
                'message',
                'dealer_note',  
         )
+        extra_kwargs = {'company': {'required':False}}
+
 
 class DealerRoleSerializer(serializers.ModelSerializer):
     
@@ -248,6 +254,7 @@ class DealerRoleSerializer(serializers.ModelSerializer):
         fields = (
                 'id',
                 'company',
+                'dealer',
                 'name',
                 'permission',
                 )
@@ -271,10 +278,56 @@ class AgencySerializer(serializers.ModelSerializer):
             'own_color',
             'own_favicon'
         )
+        extra_kwargs = {'company': {'required':False}}
+
 
 class AgencyRoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = AgencyRole
+        fields = (
+               'id',
+               'company',
+               'name',
+               'permission'
+        )
+
+
+
+class RepairFacilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RepairFacility
+        fields = (
+            'id',
+            'company',
+            'name',
+            'country',
+            'repair_facility_number',
+            'city',
+            'state',
+            'zip_code',
+            'address',
+            'phone',
+            'fax',
+            'logo',
+            'is_active',
+            'sale_tax',
+            'tax_on_parts_cost',
+            'sale_tax_on_part',
+            'tax_on_parts',
+            'sale_tax_on_labor',
+            'tax_on_labor',
+            'sale_tax_on_total',
+            'tax_on_total',
+            'heading_1',
+            'heading_2',
+            'message',
+            'automated_approval'
+        )
+        extra_kwargs = {'company': {'required':False}}
+
+class RepairFacilityRoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RepairFacilityRole
         fields = (
                'id',
                'company',

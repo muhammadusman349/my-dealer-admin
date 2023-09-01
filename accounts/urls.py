@@ -13,7 +13,10 @@ from .views import (RegistrationApi,
                     DealerMemberView,
                     AgencyView,
                     AgencyRoleView,
-                    AgencyMemberView
+                    AgencyMemberView,
+                    RepairFacilityView,
+                    RepairFacilityRoleView,
+                    RepairFacilityMemberView
                     )
 
 urlpatterns = [
@@ -49,5 +52,11 @@ urlpatterns = [
     path('<int:m_id>/agency/member/',                         AgencyMemberView.as_view(),             name='Agency-Member-listcreate-view'),
     path('<int:m_id>/agency/member/<int:id>/',                AgencyMemberView.as_view(),             name='Agency-Member-detail-view'),
 
+    path('<int:m_id>/repair_facility/',                       RepairFacilityView.as_view(),           name='RepairFacility-listcreate-view'),
+    path('<int:m_id>/repair_facility/<int:id>/',              RepairFacilityView.as_view(),           name='RepairFacility-detail-view'),
+    path('<int:m_id>/repair_facility_role/',                  RepairFacilityRoleView.as_view(),       name='RepairFacilityRole-listcreate-view'),
+    path('<int:m_id>/repair_facility_role/<int:id>/',         RepairFacilityRoleView.as_view(),       name='RepairFacilityRole-detail-view'),
+    path('<int:m_id>/repair_facility/member/',                RepairFacilityMemberView.as_view(),     name='RepairFacility-Member-listcreate-view'),
+    path('<int:m_id>/repair_facility/member/<int:id>/',       RepairFacilityMemberView.as_view(),     name='RepairFacility-Member-detail-view'),
     
 ]

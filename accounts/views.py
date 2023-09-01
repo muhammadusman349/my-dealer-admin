@@ -8,7 +8,9 @@ from .models import (User,
                      Dealer,
                      DealerRole,
                      Agency,
-                     AgencyRole
+                     AgencyRole,
+                     RepairFacility,
+                     RepairFacilityRole
                     )
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions
@@ -21,7 +23,9 @@ from .serializers import (      RegistrationSerializer,
                                 DealerSerializer,
                                 DealerRoleSerializer,
                                 AgencySerializer,
-                                AgencyRoleSerializer
+                                AgencyRoleSerializer,
+                                RepairFacilitySerializer,
+                                RepairFacilityRoleSerializer
                          )
 
                                
@@ -375,7 +379,6 @@ class AgencyRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAP
         def get_queryset(self,*args,**kwargs):
             member_id = self.kwargs.get("m_id","")
             member = Member.objects.get(id=member_id)
-            queryset = self.queryset
             queryset= AgencyRole.objects.filter(company__id=member.company.id)
             return queryset
 
@@ -398,8 +401,99 @@ class AgencyRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAP
         def delete(self, request, *args, **kwargs):
             return super().delete(request, *args, **kwargs)
 
-
 class AgencyMemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = MemberSerializer
+        queryset                = Member.objects.all()
+        lookup_field            = 'id'
+
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
+
+        def post(self, request, *args, **kwargs):
+            return super().post(request, *args, **kwargs)
+
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
+
+
+class RepairFacilityView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = RepairFacilitySerializer
+        queryset                = RepairFacility.objects.all()
+        lookup_field            = 'id'
+
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
+
+        def post(self, request, *args, **kwargs):
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
+            serializer = RepairFacilitySerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save(company= member.company) 
+                return Response(serializer.data,status=status.HTTP_200_OK) 
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
+
+class RepairFacilityRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
+        permission_classes      = [permissions.IsAuthenticated]
+        serializer_class        = RepairFacilityRoleSerializer
+        queryset                = RepairFacilityRole.objects.all()
+        lookup_field            = 'id'
+
+        def get(self, request, *args, **kwargs):
+            if 'id' in self.kwargs:
+                return self.retrieve(request, *args, **kwargs)
+            else:
+                return self.list(request, *args, **kwargs)
+
+        def get_queryset(self,*args,**kwargs):
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
+            queryset= RepairFacilityRole.objects.filter(company__id=member.company.id)
+            return queryset
+
+        def post(self, request, *args, **kwargs):
+            member_id = self.kwargs.get("m_id","")
+            member = Member.objects.get(id=member_id)
+            serializer = RepairFacilityRoleSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save(company= member.company) 
+                return Response(serializer.data,status=status.HTTP_200_OK) 
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+
+        
+        def put(self, request, *args, **kwargs):
+            return super().put(request, *args, **kwargs)
+        
+        def patch(self, request, *args, **kwargs):
+            return super().patch(request, *args, **kwargs)
+        
+        def delete(self, request, *args, **kwargs):
+            return super().delete(request, *args, **kwargs)
+
+class RepairFacilityMemberView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
         permission_classes      = [permissions.IsAuthenticated]
         serializer_class        = MemberSerializer
         queryset                = Member.objects.all()

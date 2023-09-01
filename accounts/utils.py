@@ -51,6 +51,19 @@ Agency_choices = [
 ]
 
 
+RepairFacility_choices = [
+                    ('can_view_role','can view role'),
+                    ('can_add_role','can add role'),
+                    ('can_update_role','can update role'),
+                    ('can_delete_role','can delete role'),
+
+                    ('can_view_RepairFacility_member','can view RepairFacility member'),
+                    ('can_add_RepairFacility_member','can add RepairFacility member'),
+                    ('can_update_RepairFacility_member','can update RepairFacility member'),
+                    ('can_delete_RepairFacility_member','can delete RepairFacility member'),
+
+]
+
 user_choices=[('admin',"Admin"),('dealer','Dealer'),('repair_facility','Repair Facility'),('sales_representative','Sales Representative'),('agency','Agency')]
 
 producer_type = [('franchise','Franchise'),('independent','Independent'),('bank','Bank'),('credit union','Credit Union')]
