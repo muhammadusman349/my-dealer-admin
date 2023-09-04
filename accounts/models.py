@@ -292,6 +292,7 @@ class RepairFacilityRole(models.Model):
     def __str__(self):
         return str(self.name)
 
+
 def setup_permission():
     for i in Company_permission_choices:
         try:
