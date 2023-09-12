@@ -9,6 +9,7 @@ from .utils import (Company_permission_choices,
                     claim_review_choices,
                     payment_method_choices,
                     dealer_of,
+                    dwolla_receiving_account_choices,
                     )
 from django.db import models
 
@@ -291,6 +292,35 @@ class RepairFacilityRole(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+class DwollaSenderSource(models.Model):
+    company = models.ForeignKey(Company,on_delete=models.CASCADE)
+    name = models.CharField(max_length=120)
+    dwolla_sender_source = models.CharField(max_length=120)
+
+    def __str__(self):
+        return str(self.name)
+
+class ExternalAdministrator(models.Model):
+    company = models.ForeignKey(Company,on_delete=models.CASCADE)
+    name = models.CharField(max_length=120)
+    email = models.EmailField(max_length=150,unique=True)
+    country = models.CharField(max_length=220)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=220)
+    zip_code = models.CharField(max_length=120)
+    address = models.CharField(max_length=256)
+    phone = models.CharField(max_length=120,null=True)
+    fax = models.CharField(max_length=120)
+    own_logo = models.ImageField(upload_to="Logo/",verbose_name='Logo',null=True,blank=True)
+    own_color = models.CharField(max_length=120)
+    own_favicon = models.ImageField(upload_to="favicon/",verbose_name='favicon',null=True,blank=True)
+    payable_code = models.CharField(max_length=120)
+    dwolla_sending_account_name = models.CharField(max_length=220)
+    dwolla_sending_account = models.CharField(max_length=220)
+    dwolla_receiving_account_type = models.CharField(max_length=50,choices=dwolla_receiving_account_choices,default=dwolla_receiving_account_choices)
+    dwolla_receiving_account_name = models.CharField(max_length=120)
+    dwolla_receiving_account = models.CharField(max_length=120)
 
 
 def setup_permission():

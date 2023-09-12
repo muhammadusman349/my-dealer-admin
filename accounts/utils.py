@@ -73,3 +73,5 @@ claim_review_choices = [('oem','OEM'),('after market','After Market')]
 payment_method_choices = [('stripe','Stripe'),('dwolla','Dwolla')]
  
 dealer_of = [('admin','Admin'),('agency','Agency')]
+
+dwolla_receiving_account_choices = [('receive_only','Receive Only'),('business','Business')]
