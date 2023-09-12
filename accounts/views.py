@@ -46,7 +46,21 @@ class EmailValidate(generics.CreateAPIView):
                 
                 except User.DoesNotExist:
                     return Response({"valid": True}, status=status.HTTP_200_OK)
+class MemberApproveView(generics.GenericAPIView):
+    def post(self,request,*args,**kwargs):
+        member_id = self.kwargs.get("m_id","")
+        member = Member.objects.get(id=member_id)
+        company__id=member.company.id
+        id = self.kwargs.get("id", None)
+        try:
+            member_obj=Member.objects.get(id=id,company__id=company__id)
+        except Member.DoesNotExist:
+            return Response({"User":"User is Not Exist "},status=status.HTTP_400_BAD_REQUEST) 
 
+        member_obj.is_approved = True
+        member_obj.save()
+        return Response({"Message":"Member is approve "},status=status.HTTP_200_OK)
+        
 class CompanyRoleView(generics.ListCreateAPIView,generics.RetrieveUpdateDestroyAPIView):
         permission_classes      = [permissions.IsAuthenticated]
         serializer_class        = CompanyRoleSerializer
