@@ -834,9 +834,111 @@ from accounts.models import User,Member
 
 
 
-dic= {
+# dic= {
     
-    ('a','b','c'):"usman"
-}
+#     ('a','b','c'):"usman"
+# }
 
-print(dic)
+# print(dic)
+
+# class Plan(models.Model):
+#     loss_ratio_choices = [('green','Green'),('orange','Orange'),('red','Red')]
+#     clip_type_choices = [('dollar one','Dollar One'),('failure to perform','Failure to Perform'),('lw dealerobligor','LW DealerObligor'),('dealer obligor','Dealer Obligor'),('dollar one (insurance obligor)','Dollar One (Insurance Obligor)'),('dowc','DOWC'),('insurance(100%)','Insurance(100%)')]
+#     vehicle_type_choices = [('auto','Auto'),('rv','RV'),('powersports','POWERSPORTS'),('marine','MARINE'),('mower','MOWER'),('golfcart','GOLFCART')]
+#     deductible_type_choices = [('standard','Standard'),('disappearing','Disappearing'),('reduced','Reduced')]
+#     earning_method_choices = [('pro rata','Pro Rata'),('rule of 78','Rule of 78'),('reverse rule of 78','Reverse Rule of 78')]
+
+#     retail_profit = models.IntegerField()
+#     claim_total = models.IntegerField()
+#     earned = models.IntegerField()
+#     unearned = models.IntegerField()
+#     total_underwriting = models.IntegerField()
+#     profit = models.IntegerField()
+#     claim_Count = models.IntegerField()
+#     early_claim = models.IntegerField()
+#     contract_count = models.IntegerField()
+#     severity = models.IntegerField()
+#     loss_ratio = models.IntegerField()
+#     frequency = models.IntegerField()
+#     average_claim_total = models.IntegerField()
+#     average_retail_profit = models.IntegerField()
+#     loss_ratio_status = models.CharField(max_length=50,choices=loss_ratio_choices,default=loss_ratio_choices)
+#     last_update = models.DateTimeField(auto_now_add=True)
+#     name = models.CharField(max_length=120)
+#     program_name = models.CharField(max_length=120)
+#     dealer = models.ForeignKey(Dealer,on_delete=models.CASCADE)
+#     clip_type = models.CharField(max_length=50,choices=clip_type_choices,default=clip_type_choices)
+#     drfc = models.IntegerField()
+#     deductible = models.IntegerField()
+#     disabled = models.BooleanField(default=False)
+#     part_cost_mark_up = models.IntegerField()
+#     labour_hour_mark_up = models.IntegerField()
+#     vehicle_type = models.CharField(max_length=50,choices=vehicle_type_choices,default=vehicle_type_choices)
+#     enable_money_movement = models.BooleanField(default=False)
+#     exclusionary = models.BooleanField(default=False)
+#     motorhome = models.BooleanField(default=False)
+#     travel_trailer = models.BooleanField(default=False)
+#     pop_up = models.BooleanField(default=False)
+#     fifth_wheel = models.BooleanField(default=False)
+#     motor_cycle = models.BooleanField(default=False)
+#     Off_road_motor_cycle = models.BooleanField(default=False)
+#     atv_utv = models.BooleanField(default=False)
+#     personal_water_craft = models.BooleanField(default=False)
+#     snow_mobile = models.BooleanField(default=False)
+#     boat = models.BooleanField(default=False)
+#     side_by_side = models.BooleanField(default=False)
+#     slingshot_3_wheel_mc = models.BooleanField(default=False)
+#     electric = models.BooleanField(default=False)
+#     four_wheel = models.BooleanField(default=False)
+#     car = models.BooleanField(default=False)
+#     suv = models.BooleanField(default=False)
+#     truck = models.BooleanField(default=False)
+#     van = models.BooleanField(default=False)
+#     other = models.BooleanField(default=False)
+#     deductible_type = models.CharField(max_length=50,choices=deductible_type_choices,default=deductible_type_choices)
+#     reduced_deductible = models.IntegerField()
+#     max_loss_ratio_for_auto_approval = models.IntegerField()
+#     max_claim_level_one = models.IntegerField()
+#     max_claim_level_two = models.IntegerField()
+#     max_claim_level_three = models.IntegerField()
+#     earning_method = models.CharField(max_length=50,choices=earning_method_choices,default=earning_method_choices)
+
+# for i in [2,1,5]:
+#     print(i)
+# temp = "5 degrees"
+# cel = 0
+# fahr = float(temp)
+# cel = (fahr - 32.0) * 5.0 / 9.0
+# print(cel)
+# smallest = None
+# print("Before:", smallest)
+# for itervar in [3, 41, 12, 9, 74, 15]:
+#     if smallest is None or itervar < smallest:
+#         smallest = itervar
+#         break
+#     print("Loop:", itervar, smallest)
+# print("Smallest:", smallest)
+words = 'His e-mail is q-lar@freecodecamp.org'
+pieces = words.split()
+parts = pieces[3].split('-')
+print(parts)
+
+n = parts[1]
+
+print(n)
+
+# counts = { 'quincy' : 1 , 'mrugesh' : 42, 'beau': 100, '0': 10}
+# print(counts.get('kris', 0))
+
+# lst = []
+# for key, val in counts.items():
+#     newtup = (val, key)
+#     lst.append(newtup)
+# lst = sorted(lst, reverse=True)
+# print(lst)
+
+# import re
+# s = 'A message from csev@umich.edu to cwen@iupui.edu about meeting @2PM'
+# lst = re.findall('\\S+@\\S+', s)
+# print(lst)
+
