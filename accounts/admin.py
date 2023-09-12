@@ -15,7 +15,9 @@ from .models import (User,
                      AgencyPermission,
                      RepairFacility,
                      RepairFacilityRole,
-                     RepairFacilityPermission
+                     RepairFacilityPermission,
+                     DwollaSenderSource,
+                     ExternalAdministrator,
                      )
 # Register your models here.
 
@@ -107,3 +109,5 @@ admin.site.register(AgencyPermission,AgencyPermissionAdmin)
 admin.site.register(RepairFacility,RepairFacilityAdmin)
 admin.site.register(RepairFacilityRole,RepairFacilityRoleAdmin)
 admin.site.register(RepairFacilityPermission,RepairFacilityPermissionAdmin)
+admin.site.register(DwollaSenderSource)
+admin.site.register(ExternalAdministrator)
